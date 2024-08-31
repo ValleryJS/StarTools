@@ -1,0 +1,19 @@
+{
+  "name": "startools",
+  "version": "0.0.1",
+  "description": "A collection of all must-have StarCitizen tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron main.js"
+  },
+  "author": "CatalystJS",
+  "license": "BSL-1.0",
+  "private": true,
+  "devDependencies": {
+    "electron": "^32.0.1"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
+  }
+}

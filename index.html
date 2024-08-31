@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarTools</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #2e2e2e;
+      color: #fff;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      background: #1e1e1e;
+      height: 40px;
+      -webkit-app-region: drag;
+      padding: 0 10px;
+      border-bottom: 1px solid #444;
+    }
+    .navbar .title {
+      flex: 1;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .navbar .nav-buttons {
+      display: flex;
+      margin-left: 10px;
+    }
+    .navbar .nav-buttons button {
+      background: #333;
+      border: none;
+      color: #fff;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+    }
+    .navbar .nav-buttons button:hover {
+      background: #555;
+    }
+    .navbar .controls {
+      display: flex;
+      -webkit-app-region: no-drag;
+    }
+    .navbar .controls button {
+      background: #333;
+      border: none;
+      color: #fff;
+      margin: 0 2px;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .navbar .controls button:hover {
+      background: #555;
+    }
+    .navbar .controls .maximize {
+      background: #007acc;
+    }
+    .navbar .controls .maximize:hover {
+      background: #005f99;
+    }
+    .navbar .controls .close {
+      background: #e63946;
+    }
+    .navbar .controls .close:hover {
+      background: #d62839;
+    }
+    #iframe-container {
+      display: flex;
+      flex: 1;
+      position: relative;
+    }
+    iframe {
+      flex: 1;
+      border: none;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="title">StarTools</div>
+    <div class="nav-buttons">
+      <button onclick="showIframe('iframe1')">Ship Builder</button>
+      <button onclick="showIframe('iframe2')">Item Finder</button>
+      <button onclick="showIframe('iframe3')">Trading</button>
+    </div>
+    <div class="controls">
+      <button class="minimize" onclick="minimizeWindow()">_</button>
+      <button class="maximize" onclick="toggleMaximizeWindow()">[]</button>
+      <button class="close" onclick="closeWindow()">X</button>
+    </div>
+  </div>
+  <div id="iframe-container">
+    <iframe id="iframe1" src="https://www.erkul.games"></iframe>
+    <iframe id="iframe2" class="hidden" src="https://finder.cstone.space"></iframe>
+    <iframe id="iframe3" class="hidden" src="https://uexcorp.space/"></iframe>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
