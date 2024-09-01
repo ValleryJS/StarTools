@@ -17,6 +17,7 @@
     "electron-packager": "^17.1.2"
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
     "semver": "^7.6.3"
