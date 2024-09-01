@@ -1,23 +1,25 @@
+// renderer.js
 function showIframe(id) {
     const iframes = document.querySelectorAll('iframe');
     iframes.forEach(iframe => iframe.classList.add('hidden'));
     const selectedIframe = document.getElementById(id);
     if (selectedIframe) {
-      selectedIframe.classList.remove('hidden');
+        selectedIframe.classList.remove('hidden');
     }
-  }
-  
-  function minimizeWindow() {
-    window.electron.ipcRenderer.send('minimize-window');
+}
+// Functions that interact with the Electron main process
+function minimizeWindow() {
+    window.electronAPI.minimize();
   }
   
   function toggleMaximizeWindow() {
-    window.electron.ipcRenderer.send('toggle-maximize-window');
+    window.electronAPI.toggleMaximize();
   }
   
   function closeWindow() {
-    window.electron.ipcRenderer.send('close-window');
+    window.electronAPI.close();
   }
   
+  // Show the first iframe on app load (adjust this if necessary)
   showIframe('iframe1');
   

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internet Radio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #2e2e2e;
+      color: #fff;
+    }
+
+    #searchContainer {
+      padding: 10px;
+      background: #1e1e1e;
+      border-bottom: 1px solid #444;
+      display: flex;
+      align-items: center;
+    }
+
+    #searchInput {
+      flex: 1;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #favoritesButton {
+      margin-left: 10px;
+      background: #333;
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #favoritesButton.active {
+      background: #555;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+      cursor: pointer;
+      position: relative;
+    }
+
+    li:hover {
+      background: #333;
+    }
+
+    .favorite {
+      float: right;
+      cursor: pointer;
+    }
+
+    #audioPlayerContainer {
+      background: #1e1e1e;
+      padding: 10px;
+      border-top: 1px solid #444;
+    }
+
+    #audioInfo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+    }
+
+    .controls button {
+      background: #333;
+      border: none;
+      color: #fff;
+      margin: 0 5px;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background: #555;
+    }
+
+    #volumeControl {
+      display: flex;
+      align-items: center;
+    }
+
+    #volumeControl span {
+      margin-right: 5px;
+    }
+
+    #volumeSlider {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="searchContainer">
+    <input type="text" id="searchInput" placeholder="Search for a station...">
+    <button id="favoritesButton">Favorites</button>
+  </div>
+  <ul id="stationList"></ul>
+  <div id="audioPlayerContainer">
+    <audio id="audioPlayer"></audio>
+    <div id="audioInfo">
+      <div class="song-info">
+        <span id="songTitle">No song playing</span>
+      </div>
+      <div class="controls">
+        <button id="prevStation" class="prev">&#9664;</button>
+        <button id="playPause" class="play">Play</button>
+        <button id="nextStation" class="next">&#9654;</button>
+        <div id="volumeControl">
+          <span>Volume</span>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const API_URL = 'https://de1.api.radio-browser.info/json/stations';
+    const FAVORITES_KEY = 'favorites';
+    let stationList = [];
+    let filteredStations = [];
+    let favoriteStations = [];
+    let favorites = new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []);
+    let currentStationIndex = -1;
+    let isPlaying = false;
+    const audioPlayer = document.getElementById('audioPlayer');
+    const songTitleElement = document.getElementById('songTitle');
+    const playPauseButton = document.getElementById('playPause');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const searchInput = document.getElementById('searchInput');
+    const favoritesButton = document.getElementById('favoritesButton');
+
+    async function fetchStations() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        stationList = data;
+        filteredStations = data;
+        updateFavoriteStations();
+        populateStationList(filteredStations);
+      } catch (error) {
+        console.error('Error fetching stations:', error);
+      }
+    }
+
+    function updateFavoriteStations() {
+      favoriteStations = stationList.filter(station => favorites.has(station.stationuuid));
+    }
+
+    function populateStationList(stations) {
+      const list = document.getElementById('stationList');
+      list.innerHTML = '';
+
+      stations.forEach(station => {
+        const li = document.createElement('li');
+        li.textContent = station.name;
+
+        const favButton = document.createElement('span');
+        favButton.textContent = favorites.has(station.stationuuid) ? '★' : '☆';
+        favButton.className = 'favorite';
+        favButton.onclick = (e) => {
+          e.stopPropagation();
+          toggleFavorite(station);
+        };
+
+        li.appendChild(favButton);
+        li.onclick = () => playStation(station);
+        list.appendChild(li);
+      });
+    }
+
+    function toggleFavorite(station) {
+      if (favorites.has(station.stationuuid)) {
+        favorites.delete(station.stationuuid);
+      } else {
+        favorites.add(station.stationuuid);
+      }
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(Array.from(favorites)));
+      updateFavoriteStations();
+      if (favoritesButton.classList.contains('active')) {
+        populateStationList(favoriteStations);
+      } else {
+        populateStationList(filteredStations);
+      }
+    }
+
+    function playStation(station) {
+      const index = stationList.findIndex(st => st.stationuuid === station.stationuuid);
+      if (index >= 0) {
+        currentStationIndex = index;
+        audioPlayer.src = station.url;
+        audioPlayer.play();
+        isPlaying = true;
+        playPauseButton.textContent = 'Pause';
+        songTitleElement.textContent = `Playing: ${station.name}`;
+      }
+    }
+
+    function playPause() {
+      if (isPlaying) {
+        audioPlayer.pause();
+        playPauseButton.textContent = 'Play';
+        isPlaying = false;
+      } else {
+        audioPlayer.play();
+        playPauseButton.textContent = 'Pause';
+        isPlaying = true;
+      }
+    }
+
+    function prevStation() {
+      if (currentStationIndex > 0) {
+        currentStationIndex--;
+        playStation(stationList[currentStationIndex]);
+      }
+    }
+
+    function nextStation() {
+      if (currentStationIndex < stationList.length - 1) {
+        currentStationIndex++;
+        playStation(stationList[currentStationIndex]);
+      }
+    }
+
+    function filterStations() {
+      const query = searchInput.value.toLowerCase();
+      filteredStations = stationList.filter(station => station.name.toLowerCase().includes(query));
+      populateStationList(filteredStations);
+      if (!filteredStations.find(station => station.stationuuid === stationList[currentStationIndex]?.stationuuid)) {
+        currentStationIndex = -1;
+      }
+    }
+
+    function setVolume() {
+      audioPlayer.volume = volumeSlider.value;
+    }
+
+    document.getElementById('prevStation').addEventListener('click', prevStation);
+    playPauseButton.addEventListener('click', playPause);
+    document.getElementById('nextStation').addEventListener('click', nextStation);
+    searchInput.addEventListener('input', filterStations);
+    volumeSlider.addEventListener('input', setVolume);
+
+    favoritesButton.addEventListener('click', () => {
+      favoritesButton.classList.toggle('active');
+      if (favoritesButton.classList.contains('active')) {
+        populateStationList(favoriteStations);
+        favoritesButton.textContent = 'All Stations';
+      } else {
+        populateStationList(filteredStations);
+        favoritesButton.textContent = 'Favorites';
+      }
+    });
+
+    fetchStations();
+  </script>
+</body>
+</html>

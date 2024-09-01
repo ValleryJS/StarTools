@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StarTools</title>
-  <style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarTools</title>
+    <!-- Font Awesome CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
     body {
       margin: 0;
       display: flex;
@@ -64,16 +66,16 @@
       background: #555;
     }
     .navbar .controls .maximize {
-      background: #007acc;
+      background: #333;
     }
     .navbar .controls .maximize:hover {
-      background: #005f99;
+      background: #555;
     }
     .navbar .controls .close {
-      background: #e63946;
+      background: #333;
     }
     .navbar .controls .close:hover {
-      background: #d62839;
+      background: #810606;
     }
     #iframe-container {
       display: flex;
@@ -93,20 +95,26 @@
   <div class="navbar">
     <div class="title">StarTools</div>
     <div class="nav-buttons">
-      <button onclick="showIframe('iframe1')">Ship Builder</button>
-      <button onclick="showIframe('iframe2')">Item Finder</button>
-      <button onclick="showIframe('iframe3')">Trading</button>
+      <button onclick="showIframe('iframe1')"><i class="fas fa-rocket"></i> Ship Builder</button>
+      <button onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</button>
+      <button onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading</button>
+      <button onclick="showIframe('iframe4')"><i class="fas fa-exchange-alt"></i> Mining</button>
+      <button onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</button>
+      <button onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
     </div>
     <div class="controls">
-      <button class="minimize" onclick="minimizeWindow()">_</button>
-      <button class="maximize" onclick="toggleMaximizeWindow()">[]</button>
-      <button class="close" onclick="closeWindow()">X</button>
+      <button class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
+      <button class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
+      <button class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
     </div>
   </div>
   <div id="iframe-container">
     <iframe id="iframe1" src="https://www.erkul.games"></iframe>
     <iframe id="iframe2" class="hidden" src="https://finder.cstone.space"></iframe>
     <iframe id="iframe3" class="hidden" src="https://uexcorp.space/"></iframe>
+    <iframe id="arkmap" class="hidden" src="https://survey.cstone.space/"></iframe>
+    <iframe id="iframe4" class="hidden" src="https://regolith.rocks"></iframe>
+    <iframe id="radio" class="hidden" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
   </div>
   <script src="renderer.js"></script>
 </body>

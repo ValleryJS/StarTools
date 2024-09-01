@@ -2,18 +2,46 @@
   "name": "startools",
   "version": "0.0.1",
   "description": "A collection of all must-have StarCitizen tools",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "build": "electron-builder"
   },
   "author": "CatalystJS",
   "license": "BSL-1.0",
   "private": true,
   "devDependencies": {
-    "electron": "^32.0.1"
+    "electron": "^32.0.1",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
     "path": "^0.12.7"
+  },
+  "build": {
+    "appId": "com.catalystjs.starTools",
+    "productName": "StarTools",
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
