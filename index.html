@@ -89,6 +89,10 @@
         iframe {
             flex: 1;
             border: none;
+            display: none; /* Initially hide all iframes */
+        }
+        iframe.active {
+            display: block; /* Show the active iframe */
         }
         .hidden {
             display: none;
@@ -125,7 +129,7 @@
 </head>
 <body>
     <div class="navbar">
-        <div class="title">StarTools - Pre-Release 0.0.3</div>
+        <div class="title">StarTools - Pre-Release 0.0.4</div>
         <div class="nav-buttons default-buttons">
             <button onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</button>
             <button onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</button>
@@ -146,23 +150,48 @@
         </div>
     </div>
     <div id="iframe-container">
-        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
-        <iframe id="iframe2" class="hidden" src="https://finder.cstone.space"></iframe>
-        <iframe id="iframe3" class="hidden" src="https://uexcorp.space/"></iframe>
-        <iframe id="arkmap" class="hidden" src="https://survey.cstone.space/"></iframe>
-        <iframe id="iframe4" class="hidden" src="https://regolith.rocks"></iframe>
-        <iframe id="radio" class="hidden" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
+        <iframe id="iframe1" src="https://www.erkul.games" class="active"></iframe>
+        <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
+        <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
+        <iframe id="arkmap" src="https://survey.cstone.space/"></iframe>
+        <iframe id="iframe4" src="https://regolith.rocks"></iframe>
+        <iframe id="radio" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
         <!-- Dark Red Mode Iframes -->
-        <iframe id="iframe5" class="hidden" src="https://snareplan.dolus.eu"></iframe>
+        <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
     </div>
     <script src="renderer.js"></script>
     <script>
         // Function to toggle dark red mode
         function toggleDarkRedMode() {
-            document.body.classList.toggle('dark-red-mode');
-            document.querySelector('.navbar').classList.toggle('dark-red-mode');
-            document.querySelector('.default-buttons').classList.toggle('hidden');
-            document.querySelector('.dark-red-buttons').classList.toggle('hidden');
+            const body = document.body;
+            const navbar = document.querySelector('.navbar');
+            const defaultButtons = document.querySelector('.default-buttons');
+            const darkRedButtons = document.querySelector('.dark-red-buttons');
+
+            if (body.classList.contains('dark-red-mode')) {
+                // Transitioning back to default mode
+                defaultButtons.classList.remove('hidden');
+                darkRedButtons.classList.add('hidden');
+
+                body.classList.remove('dark-red-mode');
+                navbar.classList.remove('dark-red-mode');
+                showIframe('iframe1'); // Ensure default iframe is shown
+            } else {
+                // Transitioning to dark red mode
+                defaultButtons.classList.add('hidden');
+                darkRedButtons.classList.remove('hidden');
+
+                body.classList.add('dark-red-mode');
+                navbar.classList.add('dark-red-mode');
+                showIframe('iframe5'); // Ensure dark red iframe is shown
+            }
+        }
+
+        // Function to show iframes
+        function showIframe(id) {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => iframe.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
     </script>
 </body>

@@ -1,5 +1,13 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
+const axios = require('axios');
 const path = require('path');
+const fs = require('fs');
+const semver = require('semver'); // For version comparison
+
+const versionFileUrl = 'https://raw.githubusercontent.com/YOUR_GITHUB_USER/YOUR_REPO/main/version.txt'; // Replace with your GitHub file URL
+const currentVersion = app.getVersion(); // Gets the current app version from package.json
+
+
 
 let mainWindow;
 let splashWindow;
@@ -35,6 +43,7 @@ function createWindow() {
     height: 800,
     frame: false,
     titleBarStyle: 'hidden',
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true, // Ensures scripts are isolated between the preload and renderer
@@ -47,6 +56,34 @@ function createWindow() {
 
   // Load the main HTML file into the window
   mainWindow.loadFile('index.html').catch(err => console.error('Failed to load index.html:', err));
+
+  // Check for updates
+  checkForUpdates();
+}
+
+async function checkForUpdates() {
+    try {
+        const response = await axios.get(versionFileUrl);
+        const latestVersion = response.data.trim();
+
+        if (semver.gt(latestVersion, currentVersion)) {
+            // Notify user about the update
+            const { dialog } = require('electron');
+            const choice = await dialog.showMessageBox({
+                type: 'info',
+                title: 'Update Available',
+                message: `A new version (${latestVersion}) is available. Do you want to download it now?`,
+                buttons: ['Yes', 'No']
+            });
+
+            if (choice.response === 0) {
+                // Open GitHub releases page
+                require('electron').shell.openExternal('https://github.com/YOUR_GITHUB_USER/YOUR_REPO/releases');
+            }
+        }
+    } catch (error) {
+        console.error('Error checking for updates:', error);
+    }
 
   mainWindow.on('ready-to-show', () => {
     if (splashWindow) {
