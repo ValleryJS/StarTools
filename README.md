@@ -1,7 +1,5 @@
 # StarTools
 
-![Build Status](https://img.shields.io/github/workflow/status/ValleryJS/StarTools/Build) <!-- Optional: Add a build status badge -->
-
 StarTools is an Electron application designed to assist players of StarCitizen with various in-game tools and utilities. This application provides features such as a ship builder, item finder, trading tools, and an integrated internet radio player.
 
 ## Features
