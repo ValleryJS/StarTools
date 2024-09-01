@@ -16,6 +16,9 @@ StarTools is an Electron application designed to assist players of StarCitizen w
 - **Your Anti-Virus will mark this file as malicious, which is not the case. This application is unsigned (because it's stupid expensive to get it signed).**
 *To use this application, please allow it through your Anti-Virus. You can check the source code yourself to see if it does anything malicious before using it.*
 
+## Planned Features
+- **Extensions:** I would love to add Community Made Extension support. might look into this!
+
 ## Discord
 
 - **If you run into problems with the application or have feedback that you want to directly sent to me, you may add me on discord: `catalystjs`. Please only add me for things related to this app.
