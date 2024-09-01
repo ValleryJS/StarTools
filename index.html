@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
             background-color: #2e2e2e;
             color: #fff;
-            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden;
         }
         .navbar {
             display: flex;
@@ -25,7 +25,8 @@
             -webkit-app-region: drag;
             padding: 0 10px;
             border-bottom: 1px solid #444;
-            transition: background-color 0.3s, border-bottom-color 0.3s;
+            position: relative;
+            z-index: 2;
         }
         .navbar .title {
             flex: 1;
@@ -33,26 +34,51 @@
             font-size: 16px;
             font-weight: bold;
         }
-        .navbar .nav-buttons {
-            display: flex;
-            margin-left: 10px;
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
         }
-        .navbar .nav-buttons button {
+        .navbar .dropdown .dropbtn {
             background: #333;
             border: none;
             color: #fff;
-            margin: 0 5px;
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
             -webkit-app-region: no-drag;
             transition: background-color 0.3s;
         }
-        .navbar .nav-buttons button:hover {
+        .navbar .dropdown .dropbtn:hover {
             background: #555;
+        }
+        .navbar .dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            min-width: 200px;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+        }
+        .navbar .dropdown .dropdown-content a {
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        .navbar .dropdown .dropdown-content a:hover {
+            background: #555;
+        }
+        .navbar .dropdown.active .dropdown-content {
+            display: block;
         }
         .navbar .controls {
             display: flex;
+            align-items: center;
             -webkit-app-region: no-drag;
         }
         .navbar .controls button {
@@ -69,12 +95,6 @@
         .navbar .controls button:hover {
             background: #555;
         }
-        .navbar .controls .maximize {
-            background: #333;
-        }
-        .navbar .controls .maximize:hover {
-            background: #555;
-        }
         .navbar .controls .close {
             background: #333;
         }
@@ -82,20 +102,20 @@
             background: #810606;
         }
         #iframe-container {
-            display: flex;
             flex: 1;
+            display: flex;
             position: relative;
+            margin-top: 40px;
+            overflow: hidden;
+            height: calc(100vh - 40px);
         }
         iframe {
             flex: 1;
             border: none;
-            display: none; /* Initially hide all iframes */
+            display: none;
         }
         iframe.active {
-            display: block; /* Show the active iframe */
-        }
-        .hidden {
-            display: none;
+            display: block;
         }
 
         /* Dark Red Mode Styles */
@@ -107,92 +127,73 @@
             background: #6f0000;
             border-bottom: 1px solid #444;
         }
-        .navbar.dark-red-mode .nav-buttons button {
+        .navbar.dark-red-mode .dropdown .dropbtn {
             background: #8b0000;
         }
-        .navbar.dark-red-mode .nav-buttons button:hover {
+        .navbar.dark-red-mode .dropdown .dropbtn:hover {
             background: #a52a2a;
-        }
-        .navbar.dark-red-mode .default-buttons {
-            display: none;
-        }
-        .navbar.dark-red-mode .dark-red-buttons {
-            display: flex;
-        }
-        .navbar .dark-red-buttons {
-            display: none;
-        }
-        .navbar .default-buttons {
-            display: flex;
         }
     </style>
 </head>
 <body>
     <div class="navbar">
         <div class="title">StarTools - Pre-Release 0.0.4</div>
-        <div class="nav-buttons default-buttons">
-            <button onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</button>
-            <button onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</button>
-            <button onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading</button>
-            <button onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining</button>
-            <button onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</button>
-            <button onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
-            <button onclick="toggleDarkRedMode()"><i class="fas fa-skull"></i></button> <!-- Skull button -->
+
+        <!-- Dropdown for Tools -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
+            <div id="tools-dropdown" class="dropdown-content">
+                <a href="#" onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</a>
+                <a href="#" onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</a>
+                <a href="#" onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</a>
+            </div>
         </div>
-        <div class="nav-buttons dark-red-buttons">
-            <button onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</button>
-            <button onclick="toggleDarkRedMode()"><i class="fas fa-scale-unbalanced"></i></button> <!-- Toggle back to normal mode -->
+
+        <!-- Dropdown for Trading Tools -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading </button>
+            <div id="trading-dropdown" class="dropdown-content">
+              <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
+              <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
+              <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
+            </div>
+         </div>
+
+        <!-- Dropdown for Utilities -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('utilities-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
+            <div id="utilities-dropdown" class="dropdown-content">
+                <a href="#" onclick="showIframe('verseguide')"><i class="fas fa-moon"></i> Verseguide</a>
+                <a href="#" onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</a>
+            </div>
         </div>
+
+        <!-- Separate Button for Internet Radio -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
+        </div>
+
+        <!-- Control Buttons -->
         <div class="controls">
-            <button class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
-            <button class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
-            <button class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
+            <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
+            <button data-tooltip="Maximize" class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
+            <button data-tooltip="Close" class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
         </div>
     </div>
+
     <div id="iframe-container">
         <iframe id="iframe1" src="https://www.erkul.games" class="active"></iframe>
         <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
         <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
+        <iframe id="verseguide" src="https://verseguide.com"></iframe>
+        <iframe id="gallog" src="https://gallog.co"></iframe>
         <iframe id="arkmap" src="https://survey.cstone.space/"></iframe>
         <iframe id="iframe4" src="https://regolith.rocks"></iframe>
-        <iframe id="radio" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
-        <!-- Dark Red Mode Iframes -->
+        <iframe id="radio" src="radio.html"></iframe>
         <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
     </div>
+
+    <!-- Include renderer.js -->
     <script src="renderer.js"></script>
-    <script>
-        // Function to toggle dark red mode
-        function toggleDarkRedMode() {
-            const body = document.body;
-            const navbar = document.querySelector('.navbar');
-            const defaultButtons = document.querySelector('.default-buttons');
-            const darkRedButtons = document.querySelector('.dark-red-buttons');
-
-            if (body.classList.contains('dark-red-mode')) {
-                // Transitioning back to default mode
-                defaultButtons.classList.remove('hidden');
-                darkRedButtons.classList.add('hidden');
-
-                body.classList.remove('dark-red-mode');
-                navbar.classList.remove('dark-red-mode');
-                showIframe('iframe1'); // Ensure default iframe is shown
-            } else {
-                // Transitioning to dark red mode
-                defaultButtons.classList.add('hidden');
-                darkRedButtons.classList.remove('hidden');
-
-                body.classList.add('dark-red-mode');
-                navbar.classList.add('dark-red-mode');
-                showIframe('iframe5'); // Ensure dark red iframe is shown
-            }
-        }
-
-        // Function to show iframes
-        function showIframe(id) {
-            const iframes = document.querySelectorAll('iframe');
-            iframes.forEach(iframe => iframe.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-    </script>
 </body>
 </html>

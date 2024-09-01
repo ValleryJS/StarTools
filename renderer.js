@@ -1,45 +1,64 @@
 // renderer.js
-function showIframe(id) {
-    const iframes = document.querySelectorAll('iframe');
-    iframes.forEach(iframe => iframe.classList.add('hidden'));
-    const selectedIframe = document.getElementById(id);
-    if (selectedIframe) {
-        selectedIframe.classList.remove('hidden');
-    }
-}
-// Functions that interact with the Electron main process
-function minimizeWindow() {
-    window.electronAPI.minimize();
+
+// Ensure the code runs after the document is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Function to show iframes
+  function showIframe(id) {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => iframe.classList.remove('active'));
+      const selectedIframe = document.getElementById(id);
+      if (selectedIframe) {
+          selectedIframe.classList.add('active');
+      }
+      // Close all dropdown menus when an iframe is selected
+      const dropdowns = document.querySelectorAll('.dropdown-content');
+      dropdowns.forEach(dropdown => dropdown.style.display = 'none');
   }
   
+  // Function to toggle dropdown menu visibility
+  function toggleDropdown(id) {
+      const dropdowns = document.querySelectorAll('.dropdown-content');
+      dropdowns.forEach(dropdown => {
+          if (dropdown.id !== id) {
+              dropdown.style.display = 'none';
+          }
+      });
+  
+      const dropdown = document.getElementById(id);
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+  
+  // Minimize Window Function
+  function minimizeWindow() {
+      if (window.electronAPI && typeof window.electronAPI.minimize === 'function') {
+          window.electronAPI.minimize();
+      } else {
+          console.error('electronAPI.minimize is not defined');
+      }
+  }
+  
+  // Toggle Maximize Window Function
   function toggleMaximizeWindow() {
-    window.electronAPI.toggleMaximize();
+      if (window.electronAPI && typeof window.electronAPI.toggleMaximize === 'function') {
+          window.electronAPI.toggleMaximize();
+      } else {
+          console.error('electronAPI.toggleMaximize is not defined');
+      }
   }
   
+  // Close Window Function
   function closeWindow() {
-    window.electronAPI.close();
+      if (window.electronAPI && typeof window.electronAPI.close === 'function') {
+          window.electronAPI.close();
+      } else {
+          console.error('electronAPI.close is not defined');
+      }
   }
-  
-  function toggleSkullMode() {
-    const body = document.body;
-    const navbar = document.querySelector('.navbar');
-  
-    body.classList.toggle('dark-red-mode');
-    navbar.classList.toggle('dark-red-mode');
-  
-    const buttons = navbar.querySelectorAll('.nav-buttons button');
-    if (body.classList.contains('dark-red-mode')) {
-      // Update navbar buttons to dark red mode specific ones
-      buttons.forEach(button => {
-        button.style.backgroundColor = '#8b0000'; // Example color change
-      });
-    } else {
-      // Reset to original navbar buttons
-      buttons.forEach(button => {
-        button.style.backgroundColor = ''; // Reset to default color
-      });
-    }
-  }
-  
-  showIframe('iframe1');
-  
+
+  // Attach functions to global scope for inline event handlers
+  window.showIframe = showIframe;
+  window.toggleDropdown = toggleDropdown;
+  window.minimizeWindow = minimizeWindow;
+  window.toggleMaximizeWindow = toggleMaximizeWindow;
+  window.closeWindow = closeWindow;
+});

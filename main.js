@@ -39,7 +39,6 @@ function createWindow() {
         height: 800,
         frame: false,
         titleBarStyle: 'hidden',
-        show: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true, // Ensures scripts are isolated between the preload and renderer
