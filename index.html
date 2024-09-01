@@ -1,121 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarTools</title>
+    <title>StarTools - By Vallexian</title>
     <!-- Font Awesome CDN link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background-color: #2e2e2e;
-      color: #fff;
-    }
-    .navbar {
-      display: flex;
-      align-items: center;
-      background: #1e1e1e;
-      height: 40px;
-      -webkit-app-region: drag;
-      padding: 0 10px;
-      border-bottom: 1px solid #444;
-    }
-    .navbar .title {
-      flex: 1;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .navbar .nav-buttons {
-      display: flex;
-      margin-left: 10px;
-    }
-    .navbar .nav-buttons button {
-      background: #333;
-      border: none;
-      color: #fff;
-      margin: 0 5px;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      -webkit-app-region: no-drag;
-    }
-    .navbar .nav-buttons button:hover {
-      background: #555;
-    }
-    .navbar .controls {
-      display: flex;
-      -webkit-app-region: no-drag;
-    }
-    .navbar .controls button {
-      background: #333;
-      border: none;
-      color: #fff;
-      margin: 0 2px;
-      width: 30px;
-      height: 30px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .navbar .controls button:hover {
-      background: #555;
-    }
-    .navbar .controls .maximize {
-      background: #333;
-    }
-    .navbar .controls .maximize:hover {
-      background: #555;
-    }
-    .navbar .controls .close {
-      background: #333;
-    }
-    .navbar .controls .close:hover {
-      background: #810606;
-    }
-    #iframe-container {
-      display: flex;
-      flex: 1;
-      position: relative;
-    }
-    iframe {
-      flex: 1;
-      border: none;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #2e2e2e;
+            color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            background: #1e1e1e;
+            height: 40px;
+            -webkit-app-region: drag;
+            padding: 0 10px;
+            border-bottom: 1px solid #444;
+            transition: background-color 0.3s, border-bottom-color 0.3s;
+        }
+        .navbar .title {
+            flex: 1;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .navbar .nav-buttons {
+            display: flex;
+            margin-left: 10px;
+        }
+        .navbar .nav-buttons button {
+            background: #333;
+            border: none;
+            color: #fff;
+            margin: 0 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            -webkit-app-region: no-drag;
+            transition: background-color 0.3s;
+        }
+        .navbar .nav-buttons button:hover {
+            background: #555;
+        }
+        .navbar .controls {
+            display: flex;
+            -webkit-app-region: no-drag;
+        }
+        .navbar .controls button {
+            background: #333;
+            border: none;
+            color: #fff;
+            margin: 0 2px;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .navbar .controls button:hover {
+            background: #555;
+        }
+        .navbar .controls .maximize {
+            background: #333;
+        }
+        .navbar .controls .maximize:hover {
+            background: #555;
+        }
+        .navbar .controls .close {
+            background: #333;
+        }
+        .navbar .controls .close:hover {
+            background: #810606;
+        }
+        #iframe-container {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+        iframe {
+            flex: 1;
+            border: none;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* Dark Red Mode Styles */
+        body.dark-red-mode {
+            background-color: #3a0f0f;
+            color: #f5f5f5;
+        }
+        .navbar.dark-red-mode {
+            background: #6f0000;
+            border-bottom: 1px solid #444;
+        }
+        .navbar.dark-red-mode .nav-buttons button {
+            background: #8b0000;
+        }
+        .navbar.dark-red-mode .nav-buttons button:hover {
+            background: #a52a2a;
+        }
+        .navbar.dark-red-mode .default-buttons {
+            display: none;
+        }
+        .navbar.dark-red-mode .dark-red-buttons {
+            display: flex;
+        }
+        .navbar .dark-red-buttons {
+            display: none;
+        }
+        .navbar .default-buttons {
+            display: flex;
+        }
+    </style>
 </head>
 <body>
-  <div class="navbar">
-    <div class="title">StarTools</div>
-    <div class="nav-buttons">
-      <button onclick="showIframe('iframe1')"><i class="fas fa-rocket"></i> Ship Builder</button>
-      <button onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</button>
-      <button onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading</button>
-      <button onclick="showIframe('iframe4')"><i class="fas fa-exchange-alt"></i> Mining</button>
-      <button onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</button>
-      <button onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
+    <div class="navbar">
+        <div class="title">StarTools - Pre-Release 0.0.3</div>
+        <div class="nav-buttons default-buttons">
+            <button onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</button>
+            <button onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</button>
+            <button onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading</button>
+            <button onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining</button>
+            <button onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</button>
+            <button onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
+            <button onclick="toggleDarkRedMode()"><i class="fas fa-skull"></i></button> <!-- Skull button -->
+        </div>
+        <div class="nav-buttons dark-red-buttons">
+            <button onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</button>
+            <button onclick="toggleDarkRedMode()"><i class="fas fa-scale-unbalanced"></i></button> <!-- Toggle back to normal mode -->
+        </div>
+        <div class="controls">
+            <button class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
+            <button class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
+            <button class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
+        </div>
     </div>
-    <div class="controls">
-      <button class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
-      <button class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
-      <button class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
+    <div id="iframe-container">
+        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
+        <iframe id="iframe2" class="hidden" src="https://finder.cstone.space"></iframe>
+        <iframe id="iframe3" class="hidden" src="https://uexcorp.space/"></iframe>
+        <iframe id="arkmap" class="hidden" src="https://survey.cstone.space/"></iframe>
+        <iframe id="iframe4" class="hidden" src="https://regolith.rocks"></iframe>
+        <iframe id="radio" class="hidden" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
+        <!-- Dark Red Mode Iframes -->
+        <iframe id="iframe5" class="hidden" src="https://snareplan.dolus.eu"></iframe>
     </div>
-  </div>
-  <div id="iframe-container">
-    <iframe id="iframe1" src="https://www.erkul.games"></iframe>
-    <iframe id="iframe2" class="hidden" src="https://finder.cstone.space"></iframe>
-    <iframe id="iframe3" class="hidden" src="https://uexcorp.space/"></iframe>
-    <iframe id="arkmap" class="hidden" src="https://survey.cstone.space/"></iframe>
-    <iframe id="iframe4" class="hidden" src="https://regolith.rocks"></iframe>
-    <iframe id="radio" class="hidden" src="radio.html"></iframe> <!-- Ensure correct source for radio tab -->
-  </div>
-  <script src="renderer.js"></script>
+    <script src="renderer.js"></script>
+    <script>
+        // Function to toggle dark red mode
+        function toggleDarkRedMode() {
+            document.body.classList.toggle('dark-red-mode');
+            document.querySelector('.navbar').classList.toggle('dark-red-mode');
+            document.querySelector('.default-buttons').classList.toggle('hidden');
+            document.querySelector('.dark-red-buttons').classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>

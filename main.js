@@ -2,7 +2,28 @@ const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
 
 let mainWindow;
+let splashWindow;
 let isMaximized = false;
+
+function createSplashWindow() {
+    splashWindow = new BrowserWindow({
+        width: 400,
+        height: 300,
+        frame: false,
+        transparent: true,
+        alwaysOnTop: true,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+        }
+    });
+
+    splashWindow.loadFile('splash.html');
+
+    splashWindow.on('closed', () => {
+        splashWindow = null;
+    });
+}
 
 function createWindow() {
   // Create a session for persistent storage (e.g., cookies, cache)
@@ -27,6 +48,13 @@ function createWindow() {
   // Load the main HTML file into the window
   mainWindow.loadFile('index.html').catch(err => console.error('Failed to load index.html:', err));
 
+  mainWindow.on('ready-to-show', () => {
+    if (splashWindow) {
+        splashWindow.close();
+    }
+    mainWindow.show();
+});
+
   // Handle maximize and restore states for the window
   mainWindow.on('maximize', () => {
     isMaximized = true;
@@ -43,7 +71,7 @@ function createWindow() {
 }
 
 // App lifecycle events
-app.whenReady().then(createWindow).catch(err => console.error('Failed to create window:', err));
+app.whenReady().then(() => { createSplashWindow(); createWindow();}).catch(err => console.error('Failed to create window:', err));
 
 // Quit when all windows are closed, except on macOS
 app.on('window-all-closed', () => {
