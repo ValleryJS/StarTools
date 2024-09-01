@@ -23,8 +23,11 @@ StarTools is an Electron application designed to assist players of StarCitizen w
 
 - **If you run into problems with the application or have feedback that you want to directly sent to me, you may add me on discord: `catalystjs`. Please only add me for things related to this app.**
 
-## Ingame
+## Ingame and Socials
 
 - If you happen to run into `Vallexian` while cruising around the 'verse, say hi! cuz that's me!
+
+- My Reddit: https://www.reddit.com/user/Vallexian/
+- My Discord: catalystjs
 
 
