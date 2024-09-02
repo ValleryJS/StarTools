@@ -90,7 +90,7 @@ function checkForUpdates() {
             if (latestVersion !== CURRENT_VERSION) {
                 new Notification({
                     title: 'Update Available',
-                    body: `A new version (${latestVersion}) is available! Click here to update.`,
+                    body: `A new version (${latestVersion}) is available! Please update as soon as possible!`,
                     actions: [
                         {
                             type: 'button',
