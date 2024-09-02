@@ -7,7 +7,7 @@ let splashWindow;
 let isMaximized = false;
 let tray;
 
-const CURRENT_VERSION = '0.0.5'; // Update this with your current version
+const CURRENT_VERSION = '0.0.6'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({
@@ -24,12 +24,13 @@ function createSplashWindow() {
 
     splashWindow.loadFile('splash.html');
 
-    splashWindow.on('closed', () => {
-        splashWindow = null;
-    });
+    setTimeout(() => {
+        splashWindow.close();
+        createMainWindow(); // Create the main window after closing the splash screen
+    }, 5000); // 5 seconds
 }
 
-function createWindow() {
+function createMainWindow() {
     // Create a session for persistent storage (e.g., cookies, cache)
     const winSession = session.fromPartition('persist:star-tools', { cache: true });
 
@@ -53,9 +54,6 @@ function createWindow() {
     mainWindow.loadFile('index.html').catch(err => console.error('Failed to load index.html:', err));
 
     mainWindow.on('ready-to-show', () => {
-        if (splashWindow) {
-            splashWindow.close();
-        }
         mainWindow.show();
     });
 
@@ -74,11 +72,9 @@ function createWindow() {
     });
 }
 
-if (process.platform === 'win32')
-    {
-        app.setAppUserModelId('StarTools');
-    }
-
+if (process.platform === 'win32') {
+    app.setAppUserModelId('StarTools');
+}
 
 function checkForUpdates() {
     const versionUrl = 'https://raw.githubusercontent.com/ValleryJS/StarTools/main/version.txt'; // Update with the raw URL of your version.txt file
@@ -96,8 +92,7 @@ function checkForUpdates() {
                             type: 'button',
                             text: 'Update Now',
                             async click() {
-                                event.preventDefault();
-                                window.open('https://github.com/ValleryJS/StarTools/releases/latest', '_blank'); // Update with your GitHub releases URL
+                                shell.openExternal('https://github.com/ValleryJS/StarTools/releases/latest'); // Update with your GitHub releases URL
                             }
                         }
                     ]
@@ -109,8 +104,7 @@ function checkForUpdates() {
 
 // App lifecycle events
 app.whenReady().then(() => {
-    createSplashWindow();
-    createWindow();
+    createSplashWindow(); // Show splash screen first
     checkForUpdates(); // Check for updates when the app starts
 }).catch(err => console.error('Failed to create window:', err));
 
@@ -124,7 +118,7 @@ app.on('window-all-closed', () => {
 // Re-create window when the app is activated (macOS)
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
+        createMainWindow(); // Re-create the main window if needed
     }
 });
 
