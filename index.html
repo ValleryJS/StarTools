@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarTools - By Vallexian</title>
-    <!-- Font Awesome CDN link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -36,6 +35,24 @@
             color: var(--text-color, #fff);
             font-size: 16px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .title .version {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .navbar .title .update-notification {
+            background: #ff6f61;
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-left: 10px;
+            display: none; /* Hidden by default */
         }
 
         .navbar .dropdown {
@@ -102,7 +119,7 @@
             height: 30px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 2.0s;
         }
 
         .navbar .controls button:hover {
@@ -129,14 +146,13 @@
         iframe {
             flex: 1;
             border: none;
-            display: none;
+            display: none; /* Hide all iframes by default */
         }
 
         iframe.active {
-            display: block;
+            display: block; /* Show active iframe */
         }
 
-        /* Modern Settings Panel */
         #settings-panel {
             display: none;
             position: fixed;
@@ -187,7 +203,6 @@
             background: #555;
         }
 
-        /* Background blur effect */
         #overlay {
             display: none;
             position: fixed;
@@ -202,13 +217,14 @@
     </style>
 </head>
 <body>
-    <!-- Overlay for background blur -->
     <div id="overlay"></div>
 
     <div class="navbar">
-        <div class="title">StarTools - Release 0.0.6</div>
+        <div class="title">
+            StarTools - Release 0.0.6.1
+        </div>
 
-        <!-- Dropdown for Tools -->
+        <!-- Dropdowns and Controls -->
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
             <div id="tools-dropdown" class="dropdown-content">
@@ -218,7 +234,6 @@
             </div>
         </div>
 
-        <!-- Dropdown for Trading Tools -->
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading </button>
             <div id="trading-dropdown" class="dropdown-content">
@@ -228,24 +243,16 @@
             </div>
         </div>
 
-        <!-- Dropdown for Utilities -->
         <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('utilities-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
-            <div id="utilities-dropdown" class="dropdown-content">
+            <button class="dropbtn" onclick="toggleDropdown('exploration-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
+            <div id="exploration-dropdown" class="dropdown-content">
                 <a href="#" onclick="showIframe('verseguide')"><i class="fas fa-moon"></i> Verseguide</a>
-                <a href="#" onclick="showIframe('arkmap')"><i class="fa fa-globe"></i> Planet Survey</a>
+                <a href="#" onclick="showIframe('arkmap')"><i class="fas fa-map"></i> Planet Survey</a>
             </div>
         </div>
 
-        <!-- Separate Button for Internet Radio -->
-        <div class="dropdown">
-            <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
-        </div>
-
-        <!-- Button to open settings panel (textless with cogwheel icon) -->
         <button class="settings-btn" onclick="toggleSettingsPanel()" title="Customize"><i class="fas fa-cog"></i></button>
 
-        <!-- Control Buttons -->
         <div class="controls">
             <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
             <button data-tooltip="Maximize" class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
@@ -265,7 +272,6 @@
         <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
     </div>
 
-    <!-- Settings Panel -->
     <div id="settings-panel">
         <h3>Customize Settings</h3>
         <label for="skin-select">Choose a Skin</label>
@@ -296,7 +302,10 @@
 
         function showIframe(id) {
             document.querySelectorAll('iframe').forEach(iframe => iframe.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const iframe = document.getElementById(id);
+            if (iframe) {
+                iframe.classList.add('active');
+            }
         }
 
         function toggleSettingsPanel() {
@@ -322,36 +331,39 @@
                 document.documentElement.style.setProperty('--button-hover', '#555');
             }
 
-            // Save skin choice in localStorage
             localStorage.setItem('skin', skin);
-
-            //toggleSettingsPanel(); // Close the settings panel after applying skin
         }
 
         function setDefaultPage(pageId) {
-            // Save default page in localStorage
             localStorage.setItem('defaultPage', pageId);
             showIframe(pageId);
-            //toggleSettingsPanel(); // Close the settings panel after setting default page
         }
 
-        // Load saved settings on page load
+       /* window.electron.onUpdateAvailable((latestVersion) => {
+            document.getElementById('update-notification').style.display = 'inline'; */
+        
+
         window.onload = function() {
-            const savedSkin = localStorage.getItem('skin');
-            const savedPage = localStorage.getItem('defaultPage');
+    console.log('Page loaded'); // Debug log
+    const savedSkin = localStorage.getItem('skin');
+    const savedPage = localStorage.getItem('defaultPage');
 
-            if (savedSkin) {
-                applySkin(savedSkin); // Apply saved skin settings
-            }
-
-            setTimeout(() => {
-            if (savedPage) {
-                showIframe(savedPage); // Show saved default page
-            } else {
-                showIframe('iframe1'); // Default to iframe1 if no saved page
-            }
-        }, 100); // Delay to ensure iframes are loaded
+    if (savedSkin) {
+        applySkin(savedSkin); // Apply saved skin settings
     }
+
+    setTimeout(() => {
+        if (savedPage) {
+            console.log(`Loading saved page: ${savedPage}`); // Debug log
+            showIframe(savedPage); // Show saved default page
+        } else {
+            console.log('No saved page, defaulting to iframe1'); // Debug log
+            showIframe('iframe1'); // Default to iframe1 if no saved page
+        }
+    }, 100); // Delay to ensure iframes are loaded
+
+    checkForUpdates(); // Check for updates on load
+}
     </script>
 </body>
 </html>

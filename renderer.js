@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('electronAPI.close is not defined');
         }
     }
+
+    
   
     // Function to toggle settings panel visibility
     function toggleSettingsPanel() {

@@ -7,7 +7,7 @@ let splashWindow;
 let isMaximized = false;
 let tray;
 
-const CURRENT_VERSION = '0.0.6'; // Update this with your current version
+const CURRENT_VERSION = '0.0.6.1'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({
@@ -83,7 +83,7 @@ function checkForUpdates() {
         .then(response => {
             const latestVersion = response.data.trim();
 
-            if (latestVersion !== CURRENT_VERSION) {
+            if (compareVersions(latestVersion, CURRENT_VERSION) > 0) {
                 new Notification({
                     title: 'Update Available',
                     body: `A new version (${latestVersion}) is available! Please update as soon as possible!`,
