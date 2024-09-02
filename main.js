@@ -7,7 +7,7 @@ let splashWindow;
 let isMaximized = false;
 let tray;
 
-const CURRENT_VERSION = '0.0.4'; // Update this with your current version
+const CURRENT_VERSION = '0.0.5'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({
@@ -74,13 +74,11 @@ function createWindow() {
     });
 }
 
-function createTray() {
-    tray = new Tray(path.join(__dirname, 'assets', 'trayIcon.png')); // Update with your tray icon path
-    tray.setToolTip('StarTools');
-    tray.on('click', () => {
-        mainWindow.show();
-    });
-}
+if (process.platform === 'win32')
+    {
+        app.setAppUserModelId('StarTools');
+    }
+
 
 function checkForUpdates() {
     const versionUrl = 'https://raw.githubusercontent.com/ValleryJS/StarTools/main/version.txt'; // Update with the raw URL of your version.txt file
@@ -98,7 +96,8 @@ function checkForUpdates() {
                             type: 'button',
                             text: 'Update Now',
                             async click() {
-                                shell.openExternal('https://github.com/ValleryJS/StarTools/releases'); // Update with your GitHub releases URL
+                                event.preventDefault();
+                                window.open('https://github.com/ValleryJS/StarTools/releases/latest', '_blank'); // Update with your GitHub releases URL
                             }
                         }
                     ]
@@ -112,7 +111,6 @@ function checkForUpdates() {
 app.whenReady().then(() => {
     createSplashWindow();
     createWindow();
-    createTray();
     checkForUpdates(); // Check for updates when the app starts
 }).catch(err => console.error('Failed to create window:', err));
 

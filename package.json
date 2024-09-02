@@ -1,6 +1,6 @@
 {
   "name": "startools",
-  "version": "0.0.4",
+  "version": "0.0.4.1",
   "description": "A collection of all must-have StarCitizen tools",
   "main": "main.js",
   "scripts": {
@@ -20,7 +20,8 @@
     "axios": "^1.7.7",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
-    "semver": "^7.6.3"
+    "semver": "^7.6.3",
+    "update-electron-app": "^3.0.0"
   },
   "build": {
     "appId": "com.catalystjs.starTools",

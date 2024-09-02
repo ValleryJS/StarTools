@@ -13,14 +13,16 @@
             flex-direction: column;
             height: 100vh;
             font-family: Arial, sans-serif;
-            background-color: #2e2e2e;
-            color: #fff;
+            background-color: var(--background-color, #2e2e2e);
+            color: var(--text-color, #fff);
             overflow: hidden;
+            transition: background-color 0.3s ease;
         }
+
         .navbar {
             display: flex;
             align-items: center;
-            background: #1e1e1e;
+            background: var(--navbar-bg, #1e1e1e);
             height: 40px;
             -webkit-app-region: drag;
             padding: 0 10px;
@@ -28,34 +30,39 @@
             position: relative;
             z-index: 2;
         }
+
         .navbar .title {
             flex: 1;
-            color: #fff;
+            color: var(--text-color, #fff);
             font-size: 16px;
             font-weight: bold;
         }
+
         .navbar .dropdown {
             position: relative;
             display: inline-block;
             margin-right: 10px;
         }
+
         .navbar .dropdown .dropbtn {
-            background: #333;
+            background: var(--button-bg, #333);
             border: none;
-            color: #fff;
+            color: var(--text-color, #fff);
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
             -webkit-app-region: no-drag;
             transition: background-color 0.3s;
         }
+
         .navbar .dropdown .dropbtn:hover {
-            background: #555;
+            background: var(--button-hover, #555);
         }
+
         .navbar .dropdown .dropdown-content {
             display: none;
             position: absolute;
-            background: #333;
+            background: var(--button-bg, #333);
             border: 1px solid #444;
             border-radius: 5px;
             min-width: 200px;
@@ -63,28 +70,33 @@
             left: 0;
             z-index: 1;
         }
+
         .navbar .dropdown .dropdown-content a {
-            color: #fff;
+            color: var(--text-color, #fff);
             padding: 10px;
             text-decoration: none;
             display: block;
             transition: background-color 0.3s;
         }
+
         .navbar .dropdown .dropdown-content a:hover {
-            background: #555;
+            background: var(--button-hover, #555);
         }
+
         .navbar .dropdown.active .dropdown-content {
             display: block;
         }
+
         .navbar .controls {
             display: flex;
             align-items: center;
             -webkit-app-region: no-drag;
         }
+
         .navbar .controls button {
-            background: #333;
+            background: var(--button-bg, #333);
             border: none;
-            color: #fff;
+            color: var(--text-color, #fff);
             margin: 0 2px;
             width: 30px;
             height: 30px;
@@ -92,52 +104,109 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         .navbar .controls button:hover {
-            background: #555;
+            background: var(--button-hover, #555);
         }
+
         .navbar .controls .close {
-            background: #333;
+            background: var(--button-bg, #333);
         }
+
         .navbar .controls .close:hover {
             background: #810606;
         }
+
         #iframe-container {
             flex: 1;
             display: flex;
             position: relative;
-            margin-top: 40px;
+            margin-top: 0px;
             overflow: hidden;
             height: calc(100vh - 40px);
         }
+
         iframe {
             flex: 1;
             border: none;
             display: none;
         }
+
         iframe.active {
             display: block;
         }
 
-        /* Dark Red Mode Styles */
-        body.dark-red-mode {
-            background-color: #3a0f0f;
-            color: #f5f5f5;
+        /* Modern Settings Panel */
+        #settings-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2c2c2c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            color: #fff;
+            width: 300px;
+            max-width: 100%;
+            box-sizing: border-box;
         }
-        .navbar.dark-red-mode {
-            background: #6f0000;
+
+        #settings-panel h3 {
+            margin-top: 0;
+            font-size: 18px;
             border-bottom: 1px solid #444;
+            padding-bottom: 10px;
         }
-        .navbar.dark-red-mode .dropdown .dropbtn {
-            background: #8b0000;
+
+        #settings-panel label {
+            display: block;
+            margin-bottom: 5px;
         }
-        .navbar.dark-red-mode .dropdown .dropbtn:hover {
-            background: #a52a2a;
+
+        #settings-panel select, #settings-panel button {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .settings-btn {
+            background: var(--button-bg, #333);
+            border: none;
+            color: var(--text-color, #fff);
+            padding: 5px;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            -webkit-app-region: no-drag;
+            transition: background-color 0.3s;
+        }
+
+        #settings-panel button:hover {
+            background: #555;
+        }
+
+        /* Background blur effect */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 99;
         }
     </style>
 </head>
 <body>
+    <!-- Overlay for background blur -->
+    <div id="overlay"></div>
+
     <div class="navbar">
-        <div class="title">StarTools - Pre-Release 0.0.4</div>
+        <div class="title">StarTools - Pre-Release 0.0.4.1</div>
 
         <!-- Dropdown for Tools -->
         <div class="dropdown">
@@ -153,11 +222,11 @@
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading </button>
             <div id="trading-dropdown" class="dropdown-content">
-              <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
-              <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
-              <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
+                <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
+                <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
+                <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
             </div>
-         </div>
+        </div>
 
         <!-- Dropdown for Utilities -->
         <div class="dropdown">
@@ -173,6 +242,9 @@
             <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
         </div>
 
+        <!-- Button to open settings panel (textless with cogwheel icon) -->
+        <button class="settings-btn" onclick="toggleSettingsPanel()" title="Customize"><i class="fas fa-cog"></i></button>
+
         <!-- Control Buttons -->
         <div class="controls">
             <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
@@ -182,7 +254,7 @@
     </div>
 
     <div id="iframe-container">
-        <iframe id="iframe1" src="https://www.erkul.games" class="active"></iframe>
+        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
         <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
         <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
         <iframe id="verseguide" src="https://verseguide.com"></iframe>
@@ -193,7 +265,93 @@
         <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
     </div>
 
+    <!-- Settings Panel -->
+    <div id="settings-panel">
+        <h3>Customize Settings</h3>
+        <label for="skin-select">Choose a Skin</label>
+        <select id="skin-select" onchange="applySkin(this.value)">
+            <option value="default">Default</option>
+            <option value="light">Light Mode</option>
+        </select>
+        <label for="default-page">Default Page</label>
+        <select id="default-page" onchange="setDefaultPage(this.value)">
+            <option value="iframe1">Ship Builder</option>
+            <option value="iframe2">Item Finder</option>
+            <option value="iframe3">Trading (UEX)</option>
+            <option value="verseguide">Verseguide</option>
+            <option value="arkmap">Planet Survey</option>
+            <option value="iframe4">Mining (Regolith)</option>
+            <option value="radio">Internet Radio</option>
+            <option value="iframe5">SnarePlan</option>
+        </select>
+        <button onclick="toggleSettingsPanel()">Close</button>
+    </div>
+
     <!-- Include renderer.js -->
     <script src="renderer.js"></script>
+    <script>
+        function toggleDropdown(id) {
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function showIframe(id) {
+            document.querySelectorAll('iframe').forEach(iframe => iframe.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            const overlay = document.getElementById('overlay');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+            overlay.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function applySkin(skin) {
+            if (skin === 'light') {
+                document.documentElement.style.setProperty('--background-color', '#f0f0f0');
+                document.documentElement.style.setProperty('--text-color', '#000');
+                document.documentElement.style.setProperty('--navbar-bg', '#e0e0e0');
+                document.documentElement.style.setProperty('--button-bg', '#ccc');
+                document.documentElement.style.setProperty('--button-hover', '#bbb');
+            } else {
+                document.documentElement.style.setProperty('--background-color', '#2e2e2e');
+                document.documentElement.style.setProperty('--text-color', '#fff');
+                document.documentElement.style.setProperty('--navbar-bg', '#1e1e1e');
+                document.documentElement.style.setProperty('--button-bg', '#333');
+                document.documentElement.style.setProperty('--button-hover', '#555');
+            }
+
+            // Save skin choice in localStorage
+            localStorage.setItem('skin', skin);
+
+            //toggleSettingsPanel(); // Close the settings panel after applying skin
+        }
+
+        function setDefaultPage(pageId) {
+            // Save default page in localStorage
+            localStorage.setItem('defaultPage', pageId);
+            showIframe(pageId);
+            //toggleSettingsPanel(); // Close the settings panel after setting default page
+        }
+
+        // Load saved settings on page load
+        window.onload = function() {
+            const savedSkin = localStorage.getItem('skin');
+            const savedPage = localStorage.getItem('defaultPage');
+
+            if (savedSkin) {
+                applySkin(savedSkin); // Apply saved skin settings
+            }
+
+            setTimeout(() => {
+            if (savedPage) {
+                showIframe(savedPage); // Show saved default page
+            } else {
+                showIframe('iframe1'); // Default to iframe1 if no saved page
+            }
+        }, 100); // Delay to ensure iframes are loaded
+    }
+    </script>
 </body>
 </html>
