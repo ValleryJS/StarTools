@@ -130,7 +130,7 @@
             height: 30px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 2.0s;
+            transition: background-color 0.3s;
         }
 
         .navbar .controls button:hover {
@@ -232,13 +232,14 @@
 
     <div class="navbar">
         <div class="title">
-            StarTools - Release 0.0.6.2
+            StarTools - Release 0.5.0
         </div>
 
-        <!-- Home Button-->
-         <div class="dropdown">
-            <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i>home</button>
-    </div>
+        <!-- Home Button -->
+        <div class="dropdown">
+            <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i> Home</button>
+        </div>
+
         <!-- Dropdowns and Controls -->
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
@@ -250,7 +251,7 @@
         </div>
 
         <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading </button>
+            <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading</button>
             <div id="trading-dropdown" class="dropdown-content">
                 <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
                 <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
@@ -301,7 +302,7 @@
         </select>
         <label for="default-page">Default Page</label>
         <select id="default-page" onchange="setDefaultPage(this.value)">
-            <option value="homepage">Testing Page</option>
+            <option value="homepage">Homepage</option>
             <option value="iframe1">Ship Builder</option>
             <option value="iframe2">Item Finder</option>
             <option value="iframe3">Trading (UEX)</option>
@@ -360,38 +361,35 @@
             showIframe(pageId);
         }
 
-       /* window.electron.onUpdateAvailable((latestVersion) => {
-            document.getElementById('update-notification').style.display = 'inline'; */
-        
+        function resetHomePage() {
+            const homepageIframe = document.getElementById('homepage');
+            if (homepageIframe) {
+                homepageIframe.src = 'indexnew.html'; // Ensure it reloads
+            }
+            showIframe('homepage');
+        }
 
         window.onload = function() {
-    console.log('Page loaded'); // Debug log
-    const savedSkin = localStorage.getItem('skin');
-    const savedPage = localStorage.getItem('defaultPage');
+            console.log('Page loaded'); // Debug log
+            const savedSkin = localStorage.getItem('skin');
+            const savedPage = localStorage.getItem('defaultPage');
 
-    if (savedSkin) {
-        applySkin(savedSkin); // Apply saved skin settings
-    }
+            if (savedSkin) {
+                applySkin(savedSkin); // Apply saved skin settings
+            }
 
-    setTimeout(() => {
-        if (savedPage) {
-            console.log(`Loading saved page: ${savedPage}`); // Debug log
-            showIframe(savedPage); // Show saved default page
-        } else {
-            console.log('No saved page, defaulting to iframe1'); // Debug log
-            showIframe('homepage'); // Default to iframe1 if no saved page
+            setTimeout(() => {
+                if (savedPage) {
+                    console.log(`Loading saved page: ${savedPage}`); // Debug log
+                    showIframe(savedPage); // Show saved default page
+                } else {
+                    console.log('No saved page, defaulting to homepage'); // Debug log
+                    showIframe('homepage'); // Default to homepage if no saved page
+                }
+            }, 100); // Delay to ensure iframes are loaded
+
+            checkForUpdates(); // Check for updates on load
         }
-    }, 100); // Delay to ensure iframes are loaded
-
-    checkForUpdates(); // Check for updates on load
-}
-function resetHomePage() {
-    showIframe('homepage');
-    const homepageIframe = document.getElementById('homepage');
-    if (homepageIframe) {
-        homepageIframe.src = 'indexnew.html'; // Ensure it reloads
-    }
-}
     </script>
 </body>
 </html>
