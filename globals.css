@@ -1,0 +1,30 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Segoe UI-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/642d58629675220e9d48a0bc/fonts/segoe-ui.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Segoe UI-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/653a10b559fd483a2092d3fe/fonts/segoeui.ttf")
+    format("truetype");
+}

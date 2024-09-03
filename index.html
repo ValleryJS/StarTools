@@ -61,6 +61,17 @@
             margin-right: 10px;
         }
 
+        .navbar .home {
+            background: var(--button-bg, #333);
+            border: none;
+            color: var(--text-color, #fff);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            -webkit-app-region: no-drag;
+            transition: background-color 0.3s;
+        }
+
         .navbar .dropdown .dropbtn {
             background: var(--button-bg, #333);
             border: none;
@@ -224,6 +235,10 @@
             StarTools - Release 0.0.6.2
         </div>
 
+        <!-- Home Button-->
+         <div class="dropdown">
+            <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i>home</button>
+    </div>
         <!-- Dropdowns and Controls -->
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
@@ -265,6 +280,7 @@
     </div>
 
     <div id="iframe-container">
+        <iframe id="homepage" src="indexnew.html"></iframe>
         <iframe id="iframe1" src="https://www.erkul.games"></iframe>
         <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
         <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
@@ -285,6 +301,7 @@
         </select>
         <label for="default-page">Default Page</label>
         <select id="default-page" onchange="setDefaultPage(this.value)">
+            <option value="homepage">Testing Page</option>
             <option value="iframe1">Ship Builder</option>
             <option value="iframe2">Item Finder</option>
             <option value="iframe3">Trading (UEX)</option>
@@ -362,11 +379,18 @@
             showIframe(savedPage); // Show saved default page
         } else {
             console.log('No saved page, defaulting to iframe1'); // Debug log
-            showIframe('iframe1'); // Default to iframe1 if no saved page
+            showIframe('homepage'); // Default to iframe1 if no saved page
         }
     }, 100); // Delay to ensure iframes are loaded
 
     checkForUpdates(); // Check for updates on load
+}
+function resetHomePage() {
+    showIframe('homepage');
+    const homepageIframe = document.getElementById('homepage');
+    if (homepageIframe) {
+        homepageIframe.src = 'indexnew.html'; // Ensure it reloads
+    }
 }
     </script>
 </body>

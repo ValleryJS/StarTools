@@ -1,0 +1,144 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 80px;
+  position: relative;
+  background-image: url(./img/content.png);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.content .landing-info {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.content .banner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.content .working-logo {
+  position: relative;
+  width: 256px;
+  height: 132.27px;
+}
+
+.content .titles {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.content .text-wrapper {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: "Segoe UI-Bold", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 40px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.content .div {
+  position: relative;
+  width: 211px;
+  font-family: "Segoe UI-Bold", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.content .text-wrapper-2 {
+  position: relative;
+  width: fit-content;
+  font-family: "Segoe UI-Bold", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.content .card-stack {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px 8px;
+  padding: 8px;
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+}
+
+.content .card {
+  flex-direction: column;
+  width: 160px;
+  height: 85px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: #444444;
+  box-shadow: 0px 4px 4px #00000040;
+  display: flex;
+  position: relative;
+}
+
+.content .img {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  object-fit: cover;
+}
+
+.content .text-wrapper-3 {
+  position: relative;
+  width: fit-content;
+  font-family: "Segoe UI-Regular", Helvetica;
+  font-weight: 400;
+  color: #888888;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.content .card-2 {
+  flex-direction: column;
+  width: 160px;
+  height: 84px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: #444444;
+  box-shadow: 0px 4px 4px #00000040;
+  display: flex;
+  position: relative;
+}

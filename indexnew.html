@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarTools</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background-image: url(./img/Background_Stars.png);
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100vh;
+            max-width: 1920px;
+            overflow: auto;
+        }
+
+        .landing-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .banner {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .working-logo {
+            width: 250px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .titles {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .text-wrapper {
+            font-size: 3vw;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .div {
+            font-size: 1.4vw;
+            max-width: 90%;
+        }
+
+        .text-wrapper-2 {
+            font-size: 1.4vw;
+            margin-top: 20px;
+        }
+
+        .card-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .card, .card-2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            border: 1px solid #444;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            min-height: 140px;
+            max-height: 200px;
+            cursor: pointer;
+        }
+
+        .card:hover, .card-2:hover {
+            transform: translateY(-5px);
+        }
+
+        .img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .text-wrapper-3 {
+            font-size: 1vw;
+            color: #888;
+        }
+
+        #iframe-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: scale(0.95) translateY(10px);
+        }
+
+        iframe.active {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        @media screen and (max-width: 768px) {
+            .text-wrapper {
+                font-size: 6vw;
+            }
+            .div, .text-wrapper-2 {
+                font-size: 3vw;
+            }
+            .text-wrapper-3 {
+                font-size: 2.5vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Homepage Content -->
+    <div class="content" id="homepage">
+        <div class="landing-info">
+            <div class="banner">
+                <img class="working-logo" src="img/working-logo-flattened.svg" alt="Working Logo">
+                <div class="titles">
+                    <div class="text-wrapper">StarTools</div>
+                    <p class="div">Unified community tools and utilities for Star Citizen</p>
+                </div>
+            </div>
+            <p class="text-wrapper-2">Select a tool below to begin:</p>
+        </div>
+
+        <div class="card-stack">
+            <div class="card" onclick="showIframe('iframe1')">
+                <img class="img" src="img/erkul.png" alt="Erkul Logo">
+                <div class="text-wrapper-2">Ship Builder</div>
+                <div class="text-wrapper-3">Erkul.games</div>
+            </div>
+            <div class="card" onclick="showIframe('iframe2')">
+                <img class="img" src="img/cornerstone-1.png" alt="Cornerstone Logo">
+                <div class="text-wrapper-2">Item Finder</div>
+                <div class="text-wrapper-3">Cornerstone</div>
+            </div>
+            <div class="card" onclick="showIframe('iframe5')">
+                <img class="img" src="img/dallus.png" alt="Dallus Logo">
+                <div class="text-wrapper-2">Interdiction</div>
+                <div class="text-wrapper-3">SnarePlan</div>
+            </div>
+            <div class="card" onclick="showIframe('iframe3')">
+                <img class="img" src="img/uex.png" alt="UEX Logo">
+                <div class="text-wrapper-2">Trading</div>
+                <div class="text-wrapper-3">UEX</div>
+            </div>
+            <div class="card" onclick="showIframe('gallog')">
+                <img class="img" src="img/gallog.png" alt="Gallog Logo">
+                <div class="text-wrapper-2">Trading</div>
+                <div class="text-wrapper-3">Gallog</div>
+            </div>
+            <div class="card-2" onclick="showIframe('iframe4')">
+                <img class="img" src="img/regolith.png" alt="Regolith Logo">
+                <div class="text-wrapper-2">Mining</div>
+                <div class="text-wrapper-3">Regolith</div>
+            </div>
+            <div class="card-2" onclick="showIframe('verseguide')">
+                <img class="img" src="img/verseguide.png" alt="VerseGuide Logo">
+                <div class="text-wrapper-2">Location Guide</div>
+                <div class="text-wrapper-3">VerseGuide</div>
+            </div>
+            <div class="card-2" onclick="showIframe('arkmap')">
+                <img class="img" src="img/cornerstone-1.png" alt="Cornerstone Logo">
+                <div class="text-wrapper-2">Planetary Survey</div>
+                <div class="text-wrapper-3">Cornerstone</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Iframe Container -->
+    <div id="iframe-container">
+        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
+        <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
+        <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
+        <iframe id="verseguide" src="https://verseguide.com"></iframe>
+        <iframe id="gallog" src="https://gallog.co"></iframe>
+        <iframe id="arkmap" src="https://survey.cstone.space"></iframe>
+        <iframe id="iframe4" src="https://regolith.rocks"></iframe>
+        <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
+    </div>
+
+    <script>
+        function showIframe(iframeId) {
+            // Show the iframe container
+            document.getElementById('iframe-container').style.display = 'block';
+            document.getElementById('homepage').style.display = 'none';
+
+            // Hide all iframes
+            const iframes = document.querySelectorAll('#iframe-container iframe');
+            iframes.forEach(iframe => iframe.classList.remove('active'));
+
+            // Show the selected iframe with animation
+            const iframe = document.getElementById(iframeId);
+            if (iframe) {
+                iframe.classList.add('active');
+            }
+        }
+
+        function closeIframe() {
+            // Hide iframe container and show the homepage
+            document.getElementById('iframe-container').style.display = 'none';
+            document.getElementById('homepage').style.display = 'flex';
+        }
+    </script>
+
+</body>
+</html>
