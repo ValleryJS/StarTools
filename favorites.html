@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Favorite Stations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 40px 80px;
+            background-image: url(./img/content.png);
+            background-size: cover;
+            background-position: center;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        .now-playing {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .now-playing .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .text-wrapper {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #888888;
+            font-size: 24px;
+        }
+        .text-wrapper-2 {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 24px;
+        }
+        .icon {
+            color: #ffffff;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+        }
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1 1 calc(33.333% - 20px);
+            min-width: 200px;
+        }
+        .label {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .combo-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: #1e1e1e;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .text-wrapper-3 {
+            font-family: "Segoe UI-Italic", Helvetica;
+            font-style: italic;
+            color: #888888;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .img {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: #1e1e1e;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .text-wrapper-4 {
+            font-family: "Segoe UI-Italic", Helvetica;
+            font-style: italic;
+            color: #888888;
+            font-size: 12px;
+        }
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background-color: #444444;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            width: 100%;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+        .list-item,
+        .list-item-2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 16px;
+            background-color: #1e1e1e;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .list-item:hover,
+        .list-item-2:hover {
+            background-color: #2e2e2e;
+        }
+        .language-tag,
+        .country-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 4px;
+            background-color: #444444;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .text-wrapper-5,
+        .text-wrapper-6,
+        .text-wrapper-8 {
+            font-family: "Segoe UI-Regular", Helvetica;
+            font-size: 12px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .text-wrapper-7 {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            font-size: 12px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            background-color: #444444;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .back-button {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .back-button:hover {
+            background-color: #2e2e2e;
+            border-color: #555555;
+            text-decoration: none;
+        }
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .volume-control input[type="range"] {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 5px;
+            background: #888888;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .volume-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+        }
+        .volume-control input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="now-playing">
+            <div class="status">
+                <div class="text-wrapper">Listening to:</div>
+                <div class="text-wrapper-2">Favorite Radio Station Name</div>
+                <i class="fas fa-star icon"></i>
+            </div>
+            <div class="controls">
+                <i class="fas fa-step-backward icon"></i>
+                <i class="fas fa-play icon"></i>
+                <i class="fas fa-step-forward icon"></i>
+            </div>
+            <div class="volume-control">
+                <i class="fas fa-volume-up icon"></i>
+                <input type="range" min="0" max="100" value="50">
+            </div>
+        </div>
+        <a href="radio_browser.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Main List</a>
+        <div class="list">
+            <div class="list-item">
+                <div class="status">
+                    <i class="fas fa-star icon"></i>
+                    <div class="language-tag">
+                        <div class="text-wrapper-5">eng</div>
+                    </div>
+                    <div class="country-tag">
+                        <div class="text-wrapper-6">UD</div>
+                    </div>
+                    <div class="text-wrapper-7">Favorite Radio Station Name</div>
+                </div>
+                <div class="tags">
+                    <div class="tag"><div class="text-wrapper-6">Tag 1</div></div>
+                    <div class="tag"><div class="text-wrapper-6">Tag 2</div></div>
+                    <div class="tag"><div class="text-wrapper-6">Tag 3</div></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="status">
+                    <i class="fas fa-star icon"></i>
+                    <div class="language-tag">
+                        <div class="text-wrapper-5">eng</div>
+                    </div>
+                    <div class="country-tag">
+                        <div class="text-wrapper-6">GB</div>
+                    </div>
+                    <div class="text-wrapper-7">Favorite Radio Station Name</div>
+                </div>
+                <div class="tags">
+                    <div class="tag"><div class="text-wrapper-6">Tag 1</div></div>
+                    <div class="tag"><div class="text-wrapper-6">Tag 2</div></div>
+                    <div class="tag"><div class="text-wrapper-6">Tag 3</div></div>
+                </div>
+            </div>
+            <!-- Repeat similar structures as needed -->
+        </div>
+    </div>
+</body>
+</html>

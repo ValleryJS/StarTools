@@ -11,7 +11,7 @@ async function checkForUpdates() {
         const latestVersion = latestRelease.tag_name;
 
         // Get the current version from your app (update this based on how you store the version)
-        const currentVersion = 'v0.0.4'; // Replace with your app's current version
+        const currentVersion = 'v0.6.0'; // Replace with your app's current version
 
         if (latestVersion !== currentVersion) {
             showUpdateNotification(latestVersion, latestRelease.html_url);

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radio Station Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 40px 80px;
+            background-image: url(./img/Background_Stars.png);
+            background-size: cover;
+            background-position: center;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden; /* Ensure no horizontal overflow */
+        }
+        .now-playing {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .now-playing .status {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Increased gap */
+        }
+        .text-wrapper {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #888888;
+            font-size: 28px; /* Increased font size */
+        }
+        .text-wrapper-2 {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 28px; /* Increased font size */
+        }
+        .icon {
+            color: #ffffff;
+            font-size: 24px; /* Increased icon size */
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .icon-sm {
+            color: #ffffff;
+            font-size: 16px; /* Smaller icon size for station list */
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Increased gap */
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+        }
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1 1 calc(33.333% - 20px);
+            min-width: 200px;
+        }
+        .label {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        /* Style for the combo box to keep it within the viewport */
+        .combo-box, .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: #1e1e1e;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            position: relative;
+            max-width: 100%; /* Ensure it fits within its container */
+        }
+        .combo-box select {
+            width: calc(100% - 30px); /* Adjust width to account for the arrow icon */
+            max-width: 100%;
+            color: #888888;
+            background: none;
+            border: none;
+            font-family: "Segoe UI-Italic", Helvetica;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .combo-box::after {
+            content: '\f107';
+            font-family: "Font Awesome 5 Free"; 
+            font-weight: 900;
+            position: absolute;
+            right: 16px;
+            pointer-events: none;
+            color: #888888;
+        }
+        .combo-box select option {
+            color: #000;
+        }
+        .search-bar input {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            color: #888888;
+            font-family: "Segoe UI-Italic", Helvetica;
+            font-size: 12px;
+        }
+        .img {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background-color: #444444;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            width: 100%;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .list-item,
+        .list-item-2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 16px;
+            background-color: #1e1e1e;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .list-item:hover,
+        .list-item-2:hover {
+            background-color: #2e2e2e;
+        }
+        .language-tag,
+        .country-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 4px;
+            background-color: #444444;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .text-wrapper-5,
+        .text-wrapper-6,
+        .text-wrapper-8 {
+            font-family: "Segoe UI-Regular", Helvetica;
+            font-size: 12px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .text-wrapper-7 {
+            font-family: "Segoe UI-Bold", Helvetica;
+            font-weight: 700;
+            font-size: 12px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            background-color: #444444;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .favorites-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        .favorites-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 16px;
+        }
+        .favorites-link:hover {
+            text-decoration: underline;
+        }
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Increased gap */
+        }
+        .volume-control input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 120px; /* Increased width */
+            height: 8px; /* Increased height */
+            background: #888888;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .volume-control input[type="range"]:hover {
+            opacity: 1;
+        }
+        .volume-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px; /* Increased thumb size */
+            height: 20px; /* Increased thumb size */
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+        }
+        .volume-control input[type="range"]::-moz-range-thumb {
+            width: 20px; /* Increased thumb size */
+            height: 20px; /* Increased thumb size */
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+        }
+        /* Filled star for favorited stations */
+        .favorite {
+            color: #FFD700; /* Gold color for the filled star */
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="now-playing">
+            <div class="status">
+                <div class="text-wrapper">Listening to:</div>
+                <div class="text-wrapper-2" id="currently-playing">None</div>
+                
+            </div>
+            <div class="controls">
+                <i class="fas fa-step-backward icon" onclick="skipPrevious()"></i>
+                <i class="fas fa-play icon" id="play-pause-icon" onclick="togglePlay()"></i>
+                <i class="fas fa-step-forward icon" onclick="skipNext()"></i>
+            </div>
+            <div class="volume-control">
+                <i class="fas fa-volume-up icon"></i>
+                <input type="range" id="volume-control" min="0" max="100" value="50" oninput="adjustVolume(this.value)">
+            </div>
+        </div>
+        <div class="filters">
+            <div class="filter-section">
+                <div class="label">Country</div>
+                <div class="combo-box">
+                    <select id="country-filter">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="label">Genre</div>
+                <div class="combo-box">
+                    <select id="genre-filter">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search-bar" placeholder="Search for a station...">
+            <i class="fas fa-search icon"></i>
+        </div>
+        <label class="favorites-checkbox">
+            <input type="checkbox" id="favorites-filter"> Show Favorites Only
+        </label>
+        <div class="list" id="radio-list">
+            <!-- Stations will be populated here -->
+        </div>
+    </div>
+    <script>
+        const apiUrl = 'https://de1.api.radio-browser.info/json/stations';
+        let favoriteStations = JSON.parse(localStorage.getItem('favoriteStations')) || [];
+        let allStations = JSON.parse(localStorage.getItem('allStations')) || [];
+        let currentlyPlaying;
+        let currentlyPlayingAudio;
+        let stationIndex = -1;
+        async function fetchStations(forceRefresh = false) {
+            if (forceRefresh || allStations.length == 0) {
+                try {
+                    const response = await fetch(apiUrl);
+                    const stations = await response.json();
+                    allStations = stations;
+                    localStorage.setItem('allStations', JSON.stringify(stations)); // Cache the list
+                } catch (error) {
+                    console.error('Failed to fetch stations:', error);
+                }
+            }
+            populateFilters(allStations);
+            renderStations(allStations);
+        }
+        function populateFilters(stations) {
+            const countries = [...new Set(stations.map(station => station.country))].sort();
+            const genres = [...new Set(stations.flatMap(station => station.tags.split(',').map(tag => tag.trim())))].sort();
+            const countryFilter = document.getElementById('country-filter');
+            countryFilter.innerHTML = '<option value="">All</option>';
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countryFilter.appendChild(option);
+            });
+            const genreFilter = document.getElementById('genre-filter');
+            genreFilter.innerHTML = '<option value="">All</option>';
+            genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre;
+                option.textContent = genre;
+                genreFilter.appendChild(option);
+            });
+        }
+        function renderStations(stations) {
+            const radioList = document.getElementById('radio-list');
+            radioList.innerHTML = ''; // Clear current list
+            stations.forEach(station => {
+                const isFavorite = favoriteStations.includes(station.stationuuid);
+                const stationElement = document.createElement('div');
+                stationElement.className = 'list-item';
+                stationElement.innerHTML = `
+                    <div class="status">
+                        <i class="fas fa-star icon-sm ${isFavorite ? 'favorite' : ''}" data-uuid="${station.stationuuid}"></i>
+                        <div class="language-tag">
+                            <div class="text-wrapper-5">${station.language}</div>
+                        </div>
+                        <div class="country-tag">
+                            <div class="text-wrapper-6">${station.country}</div>
+                        </div>
+                        <div class="text-wrapper-7">${station.name}</div>
+                    </div>
+                    <div class="tags">
+                        ${station.tags.split(',').map(tag => `<div class="tag"><div class="text-wrapper-6">${tag.trim()}</div></div>`).join('')}
+                    </div>
+                `;
+                stationElement.addEventListener('click', (event) => handleStationClick(event, station));
+                radioList.appendChild(stationElement);
+            });
+        }
+        function handleStationClick(event, station) {
+            if (event.target.classList.contains('fa-star')) {
+                toggleFavorite(station.stationuuid);
+            } else {
+                playStation(station);
+            }
+        }
+        function playStation(station) {
+            currentlyPlaying = station.stationuuid;
+            document.getElementById('currently-playing').textContent = station.name;
+            if (currentlyPlayingAudio) currentlyPlayingAudio.pause();
+            currentlyPlayingAudio = new Audio(station.url);
+            currentlyPlayingAudio.volume = document.getElementById('volume-control').value / 100;
+            currentlyPlayingAudio.play();
+            document.getElementById('play-pause-icon').className = 'fas fa-pause icon';
+            document.getElementById('star-icon').style.display = 'inline';
+        }
+        function togglePlay() {
+            if (currentlyPlayingAudio) {
+                if (currentlyPlayingAudio.paused) {
+                    currentlyPlayingAudio.play();
+                    document.getElementById('play-pause-icon').className = 'fas fa-pause icon';
+                } else {
+                    currentlyPlayingAudio.pause();
+                    document.getElementById('play-pause-icon').className = 'fas fa-play icon';
+                }
+            }
+        }
+        function adjustVolume(volume) {
+            if (currentlyPlayingAudio) {
+                currentlyPlayingAudio.volume = volume / 100;
+            }
+        }
+        function toggleFavorite(stationuuid, isCurrentlyPlayingStar) {
+            const index = favoriteStations.indexOf(stationuuid);
+            if (index > -1) {
+                favoriteStations.splice(index, 1); // Remove from favorites
+            } else {
+                favoriteStations.push(stationuuid); // Add to favorites
+            }
+            localStorage.setItem('favoriteStations', JSON.stringify(favoriteStations));
+            // Update the currently playing star icon if applicable
+            if (isCurrentlyPlayingStar) {
+                document.getElementById('star-icon').classList.toggle('favorite', favoriteStations.includes(stationuuid));
+            }
+            renderStations(applyFilters());
+        }
+        function skipNext() {
+            if (allStations.length > 0 && currentlyPlaying) {
+                stationIndex = (allStations.findIndex(station => station.stationuuid === currentlyPlaying) + 1) % allStations.length;
+                playStation(allStations[stationIndex]);
+            }
+        }
+        function skipPrevious() {
+            if (allStations.length > 0 && currentlyPlaying) {
+                stationIndex = (allStations.findIndex(station => station.stationuuid === currentlyPlaying) - 1 + allStations.length) % allStations.length;
+                playStation(allStations[stationIndex]);
+            }
+        }
+        document.getElementById('search-bar').addEventListener('input', () => {
+            renderStations(applyFilters());
+        });
+        document.getElementById('country-filter').addEventListener('change', () => {
+            renderStations(applyFilters());
+        });
+        document.getElementById('genre-filter').addEventListener('change', () => {
+            renderStations(applyFilters());
+        });
+        document.getElementById('favorites-filter').addEventListener('change', () => {
+            renderStations(applyFilters());
+        });
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            const selectedCountry = document.getElementById('country-filter').value;
+            const selectedGenre = document.getElementById('genre-filter').value;
+            const showFavoritesOnly = document.getElementById('favorites-filter').checked;
+            const filteredStations = allStations.filter(station => {
+                const matchesSearch = station.name.toLowerCase().includes(searchTerm);
+                const matchesCountry = !selectedCountry || station.country === selectedCountry;
+                const matchesGenre = !selectedGenre || station.tags.split(',').map(tag => tag.trim()).includes(selectedGenre);
+                const matchesFavorites = !showFavoritesOnly || favoriteStations.includes(station.stationuuid);
+                return matchesSearch && matchesCountry && matchesGenre && matchesFavorites;
+            });
+            return filteredStations;
+        }
+        // Load stations in the background
+        window.addEventListener('load', () => {
+            fetchStations(); // Initial fetch upon app load
+        });
+    </script>
+</body>
+</html>

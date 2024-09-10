@@ -1,6 +1,6 @@
 {
   "name": "startools",
-  "version": "0.0.6.2",
+  "version": "0.6.0",
   "description": "A collection of all must-have StarCitizen tools",
   "main": "main.js",
   "scripts": {
@@ -40,7 +40,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "src/assets/icon.ico"
+      "icon": "assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,

@@ -11,159 +11,118 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color, #2e2e2e);
             color: var(--text-color, #fff);
             overflow: hidden;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, background-image 0.3s ease;
         }
-
+        body.with-background {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
         .navbar {
             display: flex;
             align-items: center;
-            background: var(--navbar-bg, #1e1e1e);
-            height: 40px;
-            -webkit-app-region: drag;
-            padding: 0 10px;
+            background: var(--navbar-bg, linear-gradient(135deg, #1e1e1e, #444));
+            height: 50px;
+            padding: 0 15px;
             border-bottom: 1px solid #444;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 2;
         }
-
         .navbar .title {
             flex: 1;
             color: var(--text-color, #fff);
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
-
         .navbar .title .version {
-            margin-left: 10px;
             font-size: 14px;
-            color: #ddd;
+            color: #ccc;
         }
-
-        .navbar .title .update-notification {
-            background: #ff6f61;
-            color: #fff;
-            padding: 2px 5px;
-            border-radius: 5px;
-            font-size: 12px;
-            margin-left: 10px;
-            display: none; /* Hidden by default */
+        .navbar .home, .navbar .dropbtn, .navbar .settings-btn, .navbar .controls button {
+            background: var(--button-bg, transparent);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-color, #fff);
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+            margin-left: 5px;
         }
-
+        .navbar .home:hover, .navbar .dropbtn:hover, .navbar .settings-btn:hover, .navbar .controls button:hover {
+            background: var(--button-hover, rgba(255, 255, 255, 0.1));
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
         .navbar .dropdown {
             position: relative;
             display: inline-block;
-            margin-right: 10px;
         }
-
-        .navbar .home {
-            background: var(--button-bg, #333);
-            border: none;
-            color: var(--text-color, #fff);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            -webkit-app-region: no-drag;
-            transition: background-color 0.3s;
-        }
-
-        .navbar .dropdown .dropbtn {
-            background: var(--button-bg, #333);
-            border: none;
-            color: var(--text-color, #fff);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            -webkit-app-region: no-drag;
-            transition: background-color 0.3s;
-        }
-
-        .navbar .dropdown .dropbtn:hover {
-            background: var(--button-hover, #555);
-        }
-
         .navbar .dropdown .dropdown-content {
             display: none;
             position: absolute;
-            background: var(--button-bg, #333);
+            background: rgba(46, 46, 46, 0.95);
+            backdrop-filter: blur(5px);
             border: 1px solid #444;
-            border-radius: 5px;
+            border-radius: 8px;
             min-width: 200px;
             top: 100%;
             left: 0;
             z-index: 1;
+            animation: fadeIn 0.3s ease-in-out;
+            padding: 5px 0;
         }
-
         .navbar .dropdown .dropdown-content a {
             color: var(--text-color, #fff);
-            padding: 10px;
+            padding: 8px 15px;
             text-decoration: none;
             display: block;
-            transition: background-color 0.3s;
+            border-radius: 8px;
         }
-
         .navbar .dropdown .dropdown-content a:hover {
-            background: var(--button-hover, #555);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
         }
-
         .navbar .dropdown.active .dropdown-content {
             display: block;
         }
-
         .navbar .controls {
             display: flex;
             align-items: center;
-            -webkit-app-region: no-drag;
         }
-
         .navbar .controls button {
-            background: var(--button-bg, #333);
-            border: none;
-            color: var(--text-color, #fff);
-            margin: 0 2px;
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
         }
-
-        .navbar .controls button:hover {
-            background: var(--button-hover, #555);
-        }
-
-        .navbar .controls .close {
-            background: var(--button-bg, #333);
-        }
-
         .navbar .controls .close:hover {
             background: #810606;
         }
-
         #iframe-container {
             flex: 1;
             display: flex;
             position: relative;
-            margin-top: 0px;
             overflow: hidden;
-            height: calc(100vh - 40px);
+            height: calc(100vh - 50px);
         }
-
         iframe {
             flex: 1;
             border: none;
-            display: none; /* Hide all iframes by default */
+            display: none; 
         }
-
         iframe.active {
-            display: block; /* Show active iframe */
+            display: block; 
         }
-
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         #settings-panel {
             display: none;
             position: fixed;
@@ -180,40 +139,20 @@
             max-width: 100%;
             box-sizing: border-box;
         }
-
         #settings-panel h3 {
             margin-top: 0;
             font-size: 18px;
             border-bottom: 1px solid #444;
             padding-bottom: 10px;
         }
-
         #settings-panel label {
             display: block;
             margin-bottom: 5px;
         }
-
         #settings-panel select, #settings-panel button {
             width: 100%;
             margin-bottom: 10px;
         }
-
-        .settings-btn {
-            background: var(--button-bg, #333);
-            border: none;
-            color: var(--text-color, #fff);
-            padding: 5px;
-            margin-left: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            -webkit-app-region: no-drag;
-            transition: background-color 0.3s;
-        }
-
-        #settings-panel button:hover {
-            background: #555;
-        }
-
         #overlay {
             display: none;
             position: fixed;
@@ -229,70 +168,6 @@
 </head>
 <body>
     <div id="overlay"></div>
-
-    <div class="navbar">
-        <div class="title">
-            StarTools - Release 0.5.0
-        </div>
-
-        <!-- Home Button -->
-        <div class="dropdown">
-            <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i> Home</button>
-        </div>
-
-        <!-- Dropdowns and Controls -->
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
-            <div id="tools-dropdown" class="dropdown-content">
-                <a href="#" onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</a>
-                <a href="#" onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</a>
-                <a href="#" onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading</button>
-            <div id="trading-dropdown" class="dropdown-content">
-                <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
-                <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
-                <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('exploration-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
-            <div id="exploration-dropdown" class="dropdown-content">
-                <a href="#" onclick="showIframe('verseguide')"><i class="fas fa-moon"></i> Verseguide</a>
-                <a href="#" onclick="showIframe('arkmap')"><i class="fas fa-map"></i> Planet Survey</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
-        </div>
-
-        <button class="settings-btn" onclick="toggleSettingsPanel()" title="Customize"><i class="fas fa-cog"></i></button>
-
-        <div class="controls">
-            <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
-            <button data-tooltip="Maximize" class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
-            <button data-tooltip="Close" class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
-        </div>
-    </div>
-
-    <div id="iframe-container">
-        <iframe id="homepage" src="indexnew.html"></iframe>
-        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
-        <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
-        <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
-        <iframe id="verseguide" src="https://verseguide.com"></iframe>
-        <iframe id="gallog" src="https://gallog.co"></iframe>
-        <iframe id="arkmap" src="https://survey.cstone.space/"></iframe>
-        <iframe id="iframe4" src="https://regolith.rocks"></iframe>
-        <iframe id="radio" src="radio.html"></iframe>
-        <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
-    </div>
-
     <div id="settings-panel">
         <h3>Customize Settings</h3>
         <label for="skin-select">Choose a Skin</label>
@@ -314,14 +189,88 @@
         </select>
         <button onclick="toggleSettingsPanel()">Close</button>
     </div>
-
+    <div class="navbar">
+        <div class="title">
+            <span>StarTools - Release 0.6.0</span>
+        </div>
+        
+        <!-- Home Button -->
+        <div class="dropdown">
+            <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i> Home</button>
+        </div>
+        
+        <!-- Dropdowns and Controls -->
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
+            <div id="tools-dropdown" class="dropdown-content">
+                <a href="#" onclick="showIframe('iframe1')"><i class="fas fa-shuttle-space"></i> Ship Builder</a>
+                <a href="#" onclick="showIframe('iframe2')"><i class="fas fa-search"></i> Item Finder</a>
+                <a href="#" onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading</button>
+            <div id="trading-dropdown" class="dropdown-content">
+                <a href="#" onclick="showIframe('iframe3')"><i class="fas fa-exchange-alt"></i> Trading (UEX)</a>
+                <a href="#" onclick="showIframe('gallog')"><i class="fas fa-exchange-alt"></i> Trading (Gallog)</a>
+                <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn" onclick="toggleDropdown('exploration-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
+            <div id="exploration-dropdown" class="dropdown-content">
+                <a href="#" onclick="showIframe('verseguide')"><i class="fas fa-moon"></i> Verseguide</a>
+                <a href="#" onclick="showIframe('arkmap')"><i class="fas fa-map"></i> Planet Survey</a>
+            </div>
+        </div>
+        
+        <div class="dropdown">
+            <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
+        </div>
+        <button class="settings-btn" title="Customize" onclick="toggleSettingsPanel()"><i class="fas fa-cog"></i></button>
+        <div class="controls">
+            <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
+            <button data-tooltip="Maximize" class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
+            <button data-tooltip="Close" class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
+        </div>
+    </div>
+    <div id="iframe-container">
+        <iframe id="homepage" src="indexnew.html"></iframe>
+        <iframe id="iframe1" src="https://www.erkul.games"></iframe>
+        <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
+        <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
+        <iframe id="verseguide" src="https://verseguide.com"></iframe>
+        <iframe id="gallog" src="https://gallog.co"></iframe>
+        <iframe id="arkmap" src="https://survey.cstone.space/"></iframe>
+        <iframe id="iframe4" src="https://regolith.rocks"></iframe>
+        <iframe id="radio" src="radio_browser.html"></iframe>
+        <iframe id="radio_new" src="radio_browser.html"></iframe>
+        <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
+    </div>
     <!-- Include renderer.js -->
     <script src="renderer.js"></script>
     <script>
+        const skinSettings = {
+            "default": {
+                "navbar-bg": "linear-gradient(135deg, #1e1e1e, #444)",
+                "button-bg": "#333",
+                "button-hover": "#555",
+                "background-color": "#2e2e2e",
+                "text-color": "#fff",
+                "background-image": ""
+            },
+            "light": {
+                "navbar-bg": "#f0f0f0",
+                "button-bg": "#ccc",
+                "button-hover": "#bbb",
+                "background-color": "#ffffff",
+                "text-color": "#000000",
+                "background-image": ""
+            }
+        };
         function toggleDropdown(id) {
             document.getElementById(id).classList.toggle('active');
         }
-
         function showIframe(id) {
             document.querySelectorAll('iframe').forEach(iframe => iframe.classList.remove('active'));
             const iframe = document.getElementById(id);
@@ -329,7 +278,6 @@
                 iframe.classList.add('active');
             }
         }
-
         function toggleSettingsPanel() {
             const panel = document.getElementById('settings-panel');
             const overlay = document.getElementById('overlay');
@@ -337,30 +285,28 @@
             panel.style.display = isVisible ? 'none' : 'block';
             overlay.style.display = isVisible ? 'none' : 'block';
         }
-
         function applySkin(skin) {
-            if (skin === 'light') {
-                document.documentElement.style.setProperty('--background-color', '#f0f0f0');
-                document.documentElement.style.setProperty('--text-color', '#000');
-                document.documentElement.style.setProperty('--navbar-bg', '#e0e0e0');
-                document.documentElement.style.setProperty('--button-bg', '#ccc');
-                document.documentElement.style.setProperty('--button-hover', '#bbb');
-            } else {
-                document.documentElement.style.setProperty('--background-color', '#2e2e2e');
-                document.documentElement.style.setProperty('--text-color', '#fff');
-                document.documentElement.style.setProperty('--navbar-bg', '#1e1e1e');
-                document.documentElement.style.setProperty('--button-bg', '#333');
-                document.documentElement.style.setProperty('--button-hover', '#555');
+            var settings = skinSettings[skin];
+            if (settings) {
+                document.documentElement.style.setProperty('--navbar-bg', settings["navbar-bg"]);
+                document.documentElement.style.setProperty('--button-bg', settings["button-bg"]);
+                document.documentElement.style.setProperty('--button-hover', settings["button-hover"]);
+                document.documentElement.style.setProperty('--background-color', settings["background-color"]);
+                document.documentElement.style.setProperty('--text-color', settings["text-color"]);
+                if (settings["background-image"]) {
+                    document.body.style.backgroundImage = `url(${settings["background-image"]})`;
+                    document.body.classList.add("with-background");
+                } else {
+                    document.body.style.backgroundImage = "";
+                    document.body.classList.remove("with-background");
+                }
+                localStorage.setItem('skin', skin);
             }
-
-            localStorage.setItem('skin', skin);
         }
-
         function setDefaultPage(pageId) {
             localStorage.setItem('defaultPage', pageId);
             showIframe(pageId);
         }
-
         function resetHomePage() {
             const homepageIframe = document.getElementById('homepage');
             if (homepageIframe) {
@@ -368,16 +314,13 @@
             }
             showIframe('homepage');
         }
-
         window.onload = function() {
             console.log('Page loaded'); // Debug log
             const savedSkin = localStorage.getItem('skin');
             const savedPage = localStorage.getItem('defaultPage');
-
             if (savedSkin) {
                 applySkin(savedSkin); // Apply saved skin settings
             }
-
             setTimeout(() => {
                 if (savedPage) {
                     console.log(`Loading saved page: ${savedPage}`); // Debug log
@@ -387,8 +330,7 @@
                     showIframe('homepage'); // Default to homepage if no saved page
                 }
             }, 100); // Delay to ensure iframes are loaded
-
-            checkForUpdates(); // Check for updates on load
+            //checkForUpdates(); // Check for updates on load
         }
     </script>
 </body>

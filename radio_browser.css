@@ -1,0 +1,315 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 40px 80px;
+    position: relative;
+    background-image: url(./img/content.png);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.content .now-playing {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.content .div {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.content .text-wrapper {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-weight: 700;
+    color: #888888;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .text-wrapper-2 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .star {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.content .controls {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.content .filters {
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    position: relative;
+}
+
+.content .div-2 {
+    flex-direction: column;
+    max-width: 294px;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+    flex-grow: 1;
+    display: flex;
+    position: relative;
+}
+
+.content .label {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .combo-box {
+    display: flex;
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid;
+    border-color: #444444;
+}
+
+.content .text-wrapper-3 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Italic", Helvetica;
+    font-weight: 400;
+    font-style: italic;
+    color: #888888;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.content .img {
+    position: relative;
+    width: 15px;
+    height: 15px;
+}
+
+.content .search-bar {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid;
+    border-color: #444444;
+}
+
+.content .text-wrapper-4 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Italic", Helvetica;
+    font-weight: 400;
+    font-style: italic;
+    color: #888888;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    flex: 1;
+    flex-grow: 1;
+    background-color: #444444;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid;
+    display: flex;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+}
+
+.content .list-item {
+    display: flex;
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 16px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    background-color: #1e1e1e;
+    transition: all 0.2s ease;
+}
+
+.content .language-tag {
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 32px;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #444444;
+    border-radius: 8px;
+}
+
+.content .text-wrapper-5 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Segoe UI-Regular", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .country-tag {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #444444;
+    border-radius: 8px;
+}
+
+.content .text-wrapper-6 {
+    position: relative;
+    align-self: stretch;
+    margin-top: -1px;
+    font-family: "Segoe UI-Regular", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .text-wrapper-7 {
+    position: relative;
+    width: fit-content;
+    font-family: "Segoe UI-Bold", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.content .tags {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.content .tag {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #444444;
+    border-radius: 8px;
+}
+
+.content .list-item-2 {
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 16px;
+    background-color: #1e1e1e;
+    display: flex;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+}
+
+.content .div-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    height: 19px;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    position: relative;
+    flex: 0 0 auto;
+    background-color: #444444;
+    border-radius: 8px;
+}
+
+.content .text-wrapper-8 {
+    margin-top: -1.5px;
+    position: relative;
+    align-self: stretch;
+    font-family: "Segoe UI-Regular", Helvetica;
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+}
