@@ -1,3 +1,6 @@
+### Virus Total link:
+https://www.virustotal.com/gui/file/dbea2deca0eaf896590e519bbdd4f518b262af59cf2981c589d8e92c2fb92dde?nocache=1
+
 # StarTools
 
 StarTools is an Electron application designed to assist players of StarCitizen with various in-game tools and utilities. This application provides features such as a ship builder, item finder, trading tools, and an integrated internet radio player.
