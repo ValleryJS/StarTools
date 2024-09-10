@@ -1,6 +1,11 @@
 const { app, BrowserWindow, ipcMain, session, Tray, Notification, shell } = require('electron');
+const express = require('express');
+const rootPath = __dirname;
 const path = require('path');
-const axios = require('axios');
+const axios = require('axios');const server = express();
+server.use(express.static(rootPath));
+server.use('/img', express.static(path.join(rootPath, 'img')));
+server.listen(3000, () => console.log('Server started on port 3000'));
 
 let mainWindow;
 let splashWindow;
@@ -52,7 +57,7 @@ function createMainWindow() {
     });
 
     // Load the main HTML file into the window
-    mainWindow.loadFile('index.html').catch(err => console.error('Failed to load index.html:', err));
+    mainWindow.loadURL('http://localhost:3000/index.html').catch(err => console.error('Failed to load index.html:', err));
 
     mainWindow.on('ready-to-show', () => {
         setTimeout(function () {
@@ -131,7 +136,7 @@ app.whenReady().then(() => {
 
     setTimeout(function () {
         splash.close();
-      }, 5000);
+      }, 10000);
 
 
     createSplashWindow(); // Show splash screen first

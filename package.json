@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "express": "^4.20.0",
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
     "semver": "^7.6.3",
@@ -31,7 +32,20 @@
       "main.js",
       "preload.js",
       "renderer.js",
-      "package.json"
+      "package.json",
+      "indexnew.html",
+      "splash.html",
+      "radio_browser.html",
+      "img/Background_Stars.png",
+      "img/content.png",
+      "img/cornerstone-1.png",
+      "img/dallus.png",
+      "img/erkul.png",
+      "img/gallog.png",
+      "img/regolith.png",
+      "img/uex.png",
+      "img/verseguide.png",
+      "img/working-logo-flattened.svg"
     ],
     "directories": {
       "output": "release"
