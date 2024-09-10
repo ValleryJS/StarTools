@@ -32,6 +32,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 2;
+            -webkit-app-region: drag; /* Make the navbar draggable */
         }
         .navbar .title {
             flex: 1;
@@ -41,10 +42,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            -webkit-app-region: drag; /* Prevent elements within the title from being draggable */
         }
         .navbar .title .version {
             font-size: 14px;
             color: #ccc;
+            -webkit-app-region: drag; /* Prevent elements within the title from being draggable */
         }
         .navbar .home, .navbar .dropbtn, .navbar .settings-btn, .navbar .controls button {
             background: var(--button-bg, transparent);
@@ -55,6 +58,7 @@
             transition: background-color 0.3s, box-shadow 0.3s;
             border-radius: 8px;
             margin-left: 5px;
+            -webkit-app-region: no-drag; /* Prevent buttons from being draggable */
         }
         .navbar .home:hover, .navbar .dropbtn:hover, .navbar .settings-btn:hover, .navbar .controls button:hover {
             background: var(--button-hover, rgba(255, 255, 255, 0.1));
@@ -63,6 +67,7 @@
         .navbar .dropdown {
             position: relative;
             display: inline-block;
+            -webkit-app-region: no-drag; /* Prevent dropdown from being draggable */
         }
         .navbar .dropdown .dropdown-content {
             display: none;
@@ -84,6 +89,7 @@
             text-decoration: none;
             display: block;
             border-radius: 8px;
+            -webkit-app-region: no-drag; /* Prevent links from being draggable */
         }
         .navbar .dropdown .dropdown-content a:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -95,11 +101,13 @@
         .navbar .controls {
             display: flex;
             align-items: center;
+            -webkit-app-region: no-drag; /* Prevent controls from being draggable */
         }
         .navbar .controls button {
             width: 34px;
             height: 34px;
             border-radius: 50%;
+            -webkit-app-region: no-drag; /* Prevent control buttons from being draggable */
         }
         .navbar .controls .close:hover {
             background: #810606;
@@ -152,6 +160,7 @@
         #settings-panel select, #settings-panel button {
             width: 100%;
             margin-bottom: 10px;
+            -webkit-app-region: no-drag; /* Prevent settings panel elements from being draggable */
         }
         #overlay {
             display: none;
@@ -163,6 +172,7 @@
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
             z-index: 99;
+            -webkit-app-region: no-drag; /* Prevent overlay from being draggable */
         }
     </style>
 </head>
