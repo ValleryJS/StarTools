@@ -1,4 +1,3 @@
-// Existing imports
 const { app, BrowserWindow, ipcMain, session, Tray, Notification, shell, dialog } = require('electron');
 const express = require('express');
 const rootPath = __dirname;
@@ -18,7 +17,7 @@ let isMaximized = false;
 let tray;
 let splashStartTime;
 
-const CURRENT_VERSION = '0.6.3'; // Update this with your current version
+const CURRENT_VERSION = '0.6.4'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({
@@ -58,15 +57,31 @@ function createMainWindow() {
 
     mainWindow.loadURL('http://localhost:3000/index.html').catch(err => console.error('Failed to load index.html:', err));
 
-    mainWindow.on('ready-to-show', () => {
+    mainWindow.webContents.on('did-finish-load', () => {
         const elapsedTime = Date.now() - splashStartTime;
         const minSplashTime = 3000;  // Minimum splash screen time in ms (3 seconds)
-        
+
         // Ensure the splash screen is shown for at least the minimum time
         setTimeout(() => {
             mainWindow.show();
             splashWindow.close();  // Close the splash screen after the main window is shown
         }, Math.max(0, minSplashTime - elapsedTime));  // Delay closing if needed
+
+        // Get cookies and save them to localStorage
+        const currentSession = mainWindow.webContents.session;
+
+        currentSession.cookies.get({})
+            .then((cookies) => {
+                console.log('Cookies fetched from session:', cookies);
+                
+                // Send cookies to the renderer process to save in localStorage
+                mainWindow.webContents.executeJavaScript(`
+                    localStorage.setItem('iframeCookies', JSON.stringify(${JSON.stringify(cookies)}));
+                `);
+            })
+            .catch((error) => {
+                console.error('Error fetching cookies:', error);
+            });
     });
 
     mainWindow.on('closed', () => {
@@ -81,6 +96,7 @@ function createMainWindow() {
         isMaximized = false;
     });
 }
+
 
 function checkForUpdates() {
     const latestReleaseUrl = 'https://api.github.com/repos/ValleryJS/StarTools/releases/latest'; // GitHub API endpoint for the latest release
@@ -115,6 +131,7 @@ function checkForUpdates() {
         })
         .catch(error => console.error('Error checking for updates:', error));
 }
+
 
 function downloadUpdate(downloadUrl, version) {
     const filePath = path.join(app.getPath('userData'), `StarTools_${version}.exe`);
@@ -188,15 +205,49 @@ function promptUserForInstall(filePath) {
     }
 }
 
+function autoInstallUpdate(updateFilePath) {
+    // Close the app and run the installer silently (if supported by the installer)
+    exec(`"${updateFilePath}" /S`, (error, stdout, stderr) => { // `/S` is a common flag for silent installation
+        if (error) {
+            console.error(`Error during auto install: ${error}`);
+            return;
+        }
+        console.log(`Auto installer output: ${stdout}`);
+
+        // Wait a few seconds after installation to ensure it completes
+        setTimeout(() => {
+            // Relaunch the app after the installation is complete
+            relaunchApp();
+        }, 15000); // Adjust the delay if needed
+    });
+
+    // Quit the app immediately after starting the installer
+    app.quit(); // Quit the app to start the update process
+}
+
+function relaunchApp() {
+    // Relaunch the app after an update
+    app.relaunch();
+    app.exit(0); // Exit to ensure a clean restart
+}
+
+function manualInstallUpdate(updateFilePath) {
+    // Close the app and run the installer normally (user will follow installer steps)
+    exec(`"${updateFilePath}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error during manual install: ${error}`);
+            return;
+        }
+        console.log(`Manual installer output: ${stdout}`);
+        app.quit(); // Quit the app after running the installer
+    });
+}
+
 // App lifecycle events
 app.whenReady().then(() => {
     createSplashWindow();
     createMainWindow();    // Then, load and create the main window
     checkForUpdates(); // Check for updates when the app starts
-
-    // Check for updates every 30 minutes (1800000 ms)
-    setInterval(checkForUpdates, 1800000);
-
 }).catch(err => console.error('Failed to create window:', err));
 
 app.on('window-all-closed', () => {
