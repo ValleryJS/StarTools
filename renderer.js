@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdowns = document.querySelectorAll('.dropdown-content');
         dropdowns.forEach(dropdown => dropdown.style.display = 'none');
     }
+
+    
     
     // Function to toggle dropdown menu visibility
     function toggleDropdown(id) {

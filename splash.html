@@ -5,25 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
         body {
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #000; /* Solid black background */
+            background-color: transparent;
             overflow: hidden;
-            color: #fff;
-            font-family: Arial, sans-serif;
+            color: #d780ff;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
         }
+
+        /* Subtle starfield background with blinking stars */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: -1;
+        }
+
+        /* Spinner representing a blackhole */
         .spinner-wrapper {
             text-align: center;
         }
         .spinner {
             position: relative;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             margin: 0 auto 20px auto;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.9) 80%);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9); /* Subtle blackhole shadow */
         }
         .spinner::before {
             content: '';
@@ -32,33 +52,54 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid rgba(215, 128, 255, 0.1);
             border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1.5s linear infinite;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5);
+            border-top-color: rgba(215, 128, 255, 0.7);
+            animation: spin 2s linear infinite;
+            box-shadow: 0 0 10px rgba(215, 128, 255, 0.5), 0 0 30px rgba(215, 128, 255, 0.3);
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Faster loading text animation */
         .loading-text {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
-            animation: fadeIn 1.5s ease-in-out infinite;
+            color: #d780ff;
+            text-shadow: 0 0 5px rgba(215, 128, 255, 0.4),
+                         0 0 10px rgba(215, 128, 255, 0.2),
+                         0 0 15px rgba(215, 128, 255, 0.1);
+            width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid rgba(215, 128, 255, 0.7); /* Cursor effect */
+            animation: type 1.5s steps(20, end) forwards, subtleBlink 6s 1.5s ease-in-out;
         }
+
+        @keyframes type {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @keyframes subtleBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Static sub-text and version-text */
         .sub-text {
-            font-size: 16px;
-            color: #ccc;
-        }
-        .version-text {
-            font-size: 12px;
-            color: #999;
+            font-size: 18px;
+            color: #aaa;
             margin-top: 10px;
         }
-        @keyframes fadeIn {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+
+        .version-text {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -67,7 +108,19 @@
         <div class="spinner"></div>
         <div class="loading-text">Welcome to StarTools</div>
         <div class="sub-text">Made by Vallexian</div>
-        <div class="version-text">Release 0.6.5</div>
+        <div class="version-text">Release 0.6.6</div>
     </div>
+
+    <!-- Add an audio file that autoplays -->
+    <audio id="bg-audio" autoplay hidden>
+        <source src="bootup.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Set the volume to 50% when the page loads
+        var audio = document.getElementById("bg-audio");
+        audio.volume = 0.5; // Set volume to 50%
+    </script>
 </body>
 </html>
