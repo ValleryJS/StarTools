@@ -17,7 +17,7 @@ let isMaximized = false;
 let tray;
 let splashStartTime;
 
-const CURRENT_VERSION = '0.6.6'; // Update this with your current version
+const CURRENT_VERSION = '0.7.0'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({

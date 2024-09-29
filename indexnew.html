@@ -13,6 +13,10 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --text-color: #888; /* Fallback color */
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #121212;
@@ -23,6 +27,7 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden;
+            transition: background-image 0.3s ease-in-out;
         }
 
         .content {
@@ -31,7 +36,6 @@
             align-items: center;
             justify-content: center;
             padding: 40px;
-            background-image: url(./img/Background_Stars.png);
             background-size: cover;
             background-position: center;
             width: 100%;
@@ -127,7 +131,7 @@
 
         .text-wrapper-3 {
             font-size: 0.8vw;
-            color: #888;
+            color: var(--text-color);
         }
 
         #iframe-container {
@@ -245,27 +249,36 @@
     </div>
 
     <script>
-        function showIframe(iframeId) {
-            // Show the iframe container
-            document.getElementById('iframe-container').style.display = 'block';
-            document.getElementById('homepage').style.display = 'none';
-
-            // Hide all iframes
-            const iframes = document.querySelectorAll('#iframe-container iframe');
-            iframes.forEach(iframe => iframe.classList.remove('active'));
-
-            // Show the selected iframe with animation
-            const iframe = document.getElementById(iframeId);
-            if (iframe) {
-                iframe.classList.add('active');
+        // Apply background from localStorage
+        function applyBackgroundImage() {
+            const savedBackground = localStorage.getItem('customBackground');
+            if (savedBackground) {
+                document.body.style.backgroundImage = `url(${savedBackground})`;
+            } else {
+                document.body.style.backgroundImage = 'url(./img/Background_Stars.png)';
             }
         }
 
-        function closeIframe() {
-            // Hide iframe container and show the homepage
-            document.getElementById('iframe-container').style.display = 'none';
-            document.getElementById('homepage').style.display = 'flex';
+        const textColor = localStorage.getItem('text-color');
+
+        // If textColor is found in localStorage, apply it to the --text-color CSS variable
+        if (textColor) {
+            document.documentElement.style.setProperty('--text-color', textColor);
         }
+
+        // Listen for background update messages from parent window
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'updateBackground') {
+                document.body.style.backgroundImage = `url(${event.data.background})`;
+            }
+            
+        }, false);
+
+
+        // Request background on load
+        window.onload = function() {
+            window.parent.postMessage({ action: 'requestBackground' }, '*');
+        };
     </script>
 
 </body>

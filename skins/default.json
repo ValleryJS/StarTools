@@ -1,8 +1,8 @@
 {
-    "skin-name": "Default",
-    "navbar-bg": "#1e1e1e",
+    "navbar-bg": "linear-gradient(135deg, #1e1e1e, #444)",
     "button-bg": "#333",
     "button-hover": "#555",
     "background-color": "#2e2e2e",
-    "text-color": "#fff"
-}
+    "text-color": "#fff",
+    "background-image": ""
+  }

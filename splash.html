@@ -20,48 +20,87 @@
             position: relative;
         }
 
-        /* Subtle starfield background with blinking stars */
-        body::before {
-            content: '';
+        /* Warping effect behind the spinner */
+        .warp-effect {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            z-index: -1;
+            width: 150px;
+            height: 150px;
+            top: calc(30% - 0px); /* Adjust position to move it slightly up */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.8) 80%);
+            animation: warp 2s ease-in-out infinite;
+            filter: blur(8px);
+            z-index: -2; /* Ensures it's behind the spinner */
         }
 
-        /* Spinner representing a blackhole */
+        @keyframes warp {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.15);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Spinner representing a futuristic device */
         .spinner-wrapper {
             text-align: center;
+            position: relative;
+            z-index: 1; /* Ensure the spinner is in front */
         }
+
         .spinner {
             position: relative;
             width: 120px;
             height: 120px;
             margin: 0 auto 20px auto;
             border-radius: 50%;
-            background: radial-gradient(circle, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.9) 80%);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9); /* Subtle blackhole shadow */
-        }
-        .spinner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 4px solid rgba(215, 128, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: rgba(215, 128, 255, 0.7);
-            animation: spin 2s linear infinite;
-            box-shadow: 0 0 10px rgba(215, 128, 255, 0.5), 0 0 30px rgba(215, 128, 255, 0.3);
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 40%, rgba(0, 0, 0, 0) 70%);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes spin {
+        .spinner::before, .spinner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+
+        /* Outer ring */
+        .spinner::before {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-top: 3px solid rgba(215, 128, 255, 0.8);
+            border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+            animation: spinOuter 1.5s linear infinite;
+        }
+
+        /* Inner ring */
+        .spinner::after {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-left: 3px solid rgba(215, 128, 255, 0.8);
+            border-right: 3px solid rgba(0, 0, 0, 0.1);
+            animation: spinInner 2s linear infinite;
+        }
+
+        @keyframes spinOuter {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinInner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
         }
 
         /* Faster loading text animation */
@@ -105,10 +144,12 @@
 </head>
 <body>
     <div class="spinner-wrapper">
+        <!-- Add the warping effect behind the spinner -->
+        <div class="warp-effect"></div>
         <div class="spinner"></div>
         <div class="loading-text">Welcome to StarTools</div>
         <div class="sub-text">Made by Vallexian</div>
-        <div class="version-text">Release 0.6.6</div>
+        <div class="version-text">Release 0.7.0</div>
     </div>
 
     <!-- Add an audio file that autoplays -->

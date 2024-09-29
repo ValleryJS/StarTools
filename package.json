@@ -1,6 +1,6 @@
 {
   "name": "startools",
-  "version": "0.6.6",
+  "version": "0.7.0",
   "description": "A collection of all must-have StarCitizen tools",
   "main": "main.js",
   "scripts": {
@@ -51,7 +51,8 @@
       "img/uex_new.png",
       "img/cornerstone_new.png",
       "img/erkul_new.png",
-      "img/gallog_new.png"
+      "img/gallog_new.png",
+      "bootup.mp3"
     ],
     "directories": {
       "output": "release"

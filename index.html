@@ -32,7 +32,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 2;
-            -webkit-app-region: drag; /* Make the navbar draggable */
+            -webkit-app-region: drag;
         }
         .navbar .title {
             flex: 1;
@@ -42,12 +42,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            -webkit-app-region: drag; /* Prevent elements within the title from being draggable */
-        }
-        .navbar .title .version {
-            font-size: 14px;
-            color: #ccc;
-            -webkit-app-region: drag; /* Prevent elements within the title from being draggable */
+            -webkit-app-region: drag;
         }
         .navbar .home, .navbar .dropbtn, .navbar .settings-btn, .navbar .controls button {
             background: var(--button-bg, transparent);
@@ -58,7 +53,7 @@
             transition: background-color 0.3s, box-shadow 0.3s;
             border-radius: 8px;
             margin-left: 5px;
-            -webkit-app-region: no-drag; /* Prevent buttons from being draggable */
+            -webkit-app-region: no-drag;
         }
         .navbar .home:hover, .navbar .dropbtn:hover, .navbar .settings-btn:hover, .navbar .controls button:hover {
             background: var(--button-hover, rgba(255, 255, 255, 0.1));
@@ -67,7 +62,7 @@
         .navbar .dropdown {
             position: relative;
             display: inline-block;
-            -webkit-app-region: no-drag; /* Prevent dropdown from being draggable */
+            -webkit-app-region: no-drag;
         }
         .navbar .dropdown .dropdown-content {
             display: none;
@@ -89,7 +84,6 @@
             text-decoration: none;
             display: block;
             border-radius: 8px;
-            -webkit-app-region: no-drag; /* Prevent links from being draggable */
         }
         .navbar .dropdown .dropdown-content a:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -101,13 +95,12 @@
         .navbar .controls {
             display: flex;
             align-items: center;
-            -webkit-app-region: no-drag; /* Prevent controls from being draggable */
+            -webkit-app-region: no-drag;
         }
         .navbar .controls button {
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            -webkit-app-region: no-drag; /* Prevent control buttons from being draggable */
         }
         .navbar .controls .close:hover {
             background: #810606;
@@ -122,69 +115,164 @@
         iframe {
             flex: 1;
             border: none;
-            display: none; 
+            display: none;
         }
         iframe.active {
-            display: block; 
+            display: block;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Settings panel styling */
         #settings-panel {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2c2c2c;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            color: #fff;
-            width: 300px;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        #settings-panel h3 {
-            margin-top: 0;
-            font-size: 18px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-        }
-        #settings-panel label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        #settings-panel select, #settings-panel button {
-            width: 100%;
-            margin-bottom: 10px;
-            -webkit-app-region: no-drag; /* Prevent settings panel elements from being draggable */
-        }
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 99;
-            -webkit-app-region: no-drag; /* Prevent overlay from being draggable */
-        }
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2c2c2c;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    color: #fff;
+    width: 500px;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
+/* Improved header with consistent padding and flexbox */
+#settings-panel h3 {
+    margin-top: 0;
+    font-size: 22px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+}
+
+/* Close button */
+#settings-panel .close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+    background: none;
+    border: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+#settings-panel .close-btn:hover {
+    color: #ff5555;
+}
+
+/* Flex container to align color pickers and reset buttons in rows */
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Flex align the label and color picker */
+.settings-row label {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #ddd;
+}
+
+/* Align reset buttons to the right */
+.settings-row button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-row button:hover {
+    background-color: #777;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Styling the color circles */
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #444;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.color-circle:hover {
+    transform: scale(1.1);
+}
+
+/* Spacing and layout for select elements and file input */
+#settings-panel select, #settings-panel input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #3c3c3c;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+#settings-panel select:hover, #settings-panel input[type="file"]:hover {
+    background-color: #444;
+}
     </style>
 </head>
 <body>
     <div id="overlay"></div>
     <div id="settings-panel">
-        <h3>Customize Settings</h3>
-        <label for="skin-select">Choose a Skin</label>
-        <select id="skin-select" onchange="applySkin(this.value)">
-            <option value="default">Default</option>
-            <option value="light">Light Mode</option>
-        </select>
+        <h3>
+            Customize Settings
+            <button class="close-btn" onclick="toggleSettingsPanel()">✕</button>
+        </h3>
+    
+        <div class="settings-row">
+            <label for="text-color-picker">Text Color</label>
+            <div class="color-circle" id="text-color-circle" onclick="openColorPicker('text-color')"></div>
+            <input type="color" id="text-color-picker" style="display:none" onchange="setColor('text-color', this.value)">
+            <button onclick="resetColor('text-color')">Reset</button>
+        </div>
+    
+        <div class="settings-row">
+            <label for="navbar-color-picker">Navbar Color</label>
+            <div class="color-circle" id="navbar-color-circle" onclick="openColorPicker('navbar-bg')"></div>
+            <input type="color" id="navbar-bg-picker" style="display:none" onchange="setColor('navbar-bg', this.value)">
+            <button onclick="resetColor('navbar-bg')">Reset</button>
+        </div>
+    
+        <div class="settings-row">
+            <label for="button-color-picker">Button Color</label>
+            <div class="color-circle" id="button-color-circle" onclick="openColorPicker('button-bg')"></div>
+            <input type="color" id="button-bg-picker" style="display:none" onchange="setColor('button-bg', this.value)">
+            <button onclick="resetColor('button-bg')">Reset</button>
+        </div>
+    
+        <div class="settings-row">
+            <label for="hover-color-picker">Hover Color</label>
+            <div class="color-circle" id="hover-color-circle" onclick="openColorPicker('button-hover')"></div>
+            <input type="color" id="button-hover-picker" style="display:none" onchange="setColor('button-hover', this.value)">
+            <button onclick="resetColor('button-hover')">Reset</button>
+        </div>
+    
+        <!-- Default page selection -->
         <label for="default-page">Default Page</label>
         <select id="default-page" onchange="setDefaultPage(this.value)">
             <option value="homepage">Homepage</option>
@@ -197,18 +285,22 @@
             <option value="radio">Internet Radio</option>
             <option value="iframe5">SnarePlan</option>
         </select>
-        <button onclick="toggleSettingsPanel()">Close</button>
+    
+        <!-- Image upload for background -->
+        <label for="background-upload">Upload Background Image</label>
+        <input type="file" id="background-upload" accept="image/*" onchange="handleBackgroundUpload(event)">
     </div>
+
     <div class="navbar">
         <div class="title">
-            <span>StarTools - Release 0.6.6</span>
+            <span>StarTools - Release 0.7.0</span>
         </div>
         
         <!-- Home Button -->
         <div class="dropdown">
             <button class="home" onclick="resetHomePage()"><i class="fas fa-home"></i> Home</button>
         </div>
-        
+
         <!-- Dropdowns and Controls -->
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('tools-dropdown')"><i class="fas fa-tools"></i> Ships & Tools</button>
@@ -218,6 +310,7 @@
                 <a href="#" onclick="showIframe('iframe5')"><i class="fas fa-skull"></i> SnarePlan</a>
             </div>
         </div>
+        
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('trading-dropdown')"><i class="fas fa-exchange-alt"></i> Trading</button>
             <div id="trading-dropdown" class="dropdown-content">
@@ -226,6 +319,7 @@
                 <a href="#" onclick="showIframe('iframe4')"><i class="fas fa-industry"></i> Mining (Regolith)</a>
             </div>
         </div>
+        
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('exploration-dropdown')"><i class="fas fa-globe"></i> Exploration</button>
             <div id="exploration-dropdown" class="dropdown-content">
@@ -237,13 +331,17 @@
         <div class="dropdown">
             <button class="dropbtn" onclick="showIframe('radio')"><i class="fas fa-radio"></i> Internet Radio</button>
         </div>
+
         <button class="settings-btn" title="Customize" onclick="toggleSettingsPanel()"><i class="fas fa-cog"></i></button>
+
+        <!-- Navbar controls like minimize, maximize, and close buttons -->
         <div class="controls">
             <button data-tooltip="Minimize" class="minimize" onclick="minimizeWindow()"><i class="fas fa-minus-square"></i></button>
             <button data-tooltip="Maximize" class="maximize" onclick="toggleMaximizeWindow()"><i class="fas fa-window-restore"></i></button>
             <button data-tooltip="Close" class="close" onclick="closeWindow()"><i class="fas fa-times-rectangle"></i></button>
         </div>
     </div>
+
     <div id="iframe-container">
         <iframe id="homepage" src="indexnew.html"></iframe>
         <iframe id="iframe1" src="https://www.erkul.games"></iframe>
@@ -257,66 +355,34 @@
         <iframe id="radio_new" src="radio_browser.html"></iframe>
         <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
     </div>
-    <!-- Include renderer.js -->
     <script src="renderer.js"></script>
     <script>
-        const skinSettings = {
-            "default": {
-                "navbar-bg": "linear-gradient(135deg, #1e1e1e, #444)",
-                "button-bg": "#333",
-                "button-hover": "#555",
-                "background-color": "#2e2e2e",
-                "text-color": "#fff",
-                "background-image": ""
-            },
-            "light": {
-                "navbar-bg": "#f0f0f0",
-                "button-bg": "#ccc",
-                "button-hover": "#bbb",
-                "background-color": "#ffffff",
-                "text-color": "#000000",
-                "background-image": ""
-            }
-        };
-        function toggleDropdown(id) {
-            document.getElementById(id).classList.toggle('active');
+        // Handle skin changes
+      /*  function applySkin(skin) {
+    const settings = skinSettings[skin];
+    if (settings) {
+        document.documentElement.style.setProperty('--navbar-bg', settings['navbar-bg']);
+        document.documentElement.style.setProperty('--button-bg', settings['button-bg']);
+        document.documentElement.style.setProperty('--button-hover', settings['button-hover']);
+        document.documentElement.style.setProperty('--background-color', settings['background-color']);
+        document.documentElement.style.setProperty('--text-color', settings['text-color']);
+        if (settings['background-image']) {
+            document.body.style.backgroundImage = `url(${settings['background-image']})`;
+            document.body.classList.add('with-background');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.classList.remove('with-background');
         }
-        function showIframe(id) {
-            document.querySelectorAll('iframe').forEach(iframe => iframe.classList.remove('active'));
-            const iframe = document.getElementById(id);
-            if (iframe) {
-                iframe.classList.add('active');
-            }
-        }
-        function toggleSettingsPanel() {
-            const panel = document.getElementById('settings-panel');
-            const overlay = document.getElementById('overlay');
-            const isVisible = panel.style.display === 'block';
-            panel.style.display = isVisible ? 'none' : 'block';
-            overlay.style.display = isVisible ? 'none' : 'block';
-        }
-        function applySkin(skin) {
-            var settings = skinSettings[skin];
-            if (settings) {
-                document.documentElement.style.setProperty('--navbar-bg', settings["navbar-bg"]);
-                document.documentElement.style.setProperty('--button-bg', settings["button-bg"]);
-                document.documentElement.style.setProperty('--button-hover', settings["button-hover"]);
-                document.documentElement.style.setProperty('--background-color', settings["background-color"]);
-                document.documentElement.style.setProperty('--text-color', settings["text-color"]);
-                if (settings["background-image"]) {
-                    document.body.style.backgroundImage = `url(${settings["background-image"]})`;
-                    document.body.classList.add("with-background");
-                } else {
-                    document.body.style.backgroundImage = "";
-                    document.body.classList.remove("with-background");
-                }
-                localStorage.setItem('skin', skin);
-            }
-        }
+        localStorage.setItem('skin', skin); // Save selected skin
+    }
+}*/
+
+        // Handle default page selection
         function setDefaultPage(pageId) {
             localStorage.setItem('defaultPage', pageId);
             showIframe(pageId);
         }
+
         function resetHomePage() {
             const homepageIframe = document.getElementById('homepage');
             if (homepageIframe) {
@@ -324,24 +390,135 @@
             }
             showIframe('homepage');
         }
-        window.onload = function() {
-            console.log('Page loaded'); // Debug log
-            const savedSkin = localStorage.getItem('skin');
-            const savedPage = localStorage.getItem('defaultPage');
-            if (savedSkin) {
-                applySkin(savedSkin); // Apply saved skin settings
-            }
-            setTimeout(() => {
-                if (savedPage) {
-                    console.log(`Loading saved page: ${savedPage}`); // Debug log
-                    showIframe(savedPage); // Show saved default page
-                } else {
-                    console.log('No saved page, defaulting to homepage'); // Debug log
-                    showIframe('homepage'); // Default to homepage if no saved page
-                }
-            }, 100); // Delay to ensure iframes are loaded
-            //checkForUpdates(); // Check for updates on load
+
+        // Function to toggle settings panel visibility
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            const overlay = document.getElementById('overlay');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+            overlay.style.display = isVisible ? 'none' : 'block';
         }
+
+        // Handle background upload and save to localStorage
+        function handleBackgroundUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    localStorage.setItem('customBackground', imageUrl);  // Save image to localStorage
+                    updateBackgroundImage();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Open the color picker for a specific element
+function openColorPicker(element) {
+    document.getElementById(`${element}-picker`).click();
+}
+
+function resetColor(variable) {
+    // Define default values for each CSS variable
+    const defaultColors = {
+        'text-color': '#fff',           // Default text color
+        'navbar-bg': 'linear-gradient(135deg, #1e1e1e, #444)', // Default navbar gradient
+        'button-bg': '#333',            // Default button color
+        'button-hover': '#555'          // Default hover color
+    };
+
+// Set the selected color and update the relevant CSS variable
+function setColor(variable, color) {
+    document.documentElement.style.setProperty(`--${variable}`, color);
+    localStorage.setItem(variable, color);
+    updateColorCircles();
+}
+
+localStorage.removeItem(variable);
+
+    // Reset the CSS variable to its default value
+    document.documentElement.style.setProperty(`--${variable}`, defaultColors[variable]);
+
+    // Update the color circles and color pickers to reflect the default values
+    updateColorCircles();
+    updateColorPickers();
+}
+
+// Update color circles to reflect the current selected colors
+function updateColorCircles() {
+    document.getElementById('text-color-circle').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+    document.getElementById('navbar-color-circle').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--navbar-bg');
+    document.getElementById('button-color-circle').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--button-bg');
+    document.getElementById('hover-color-circle').style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--button-hover');
+}
+
+function updateColorPickers() {
+    // Get the current values from CSS variables or fallback to localStorage
+    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color') || '#ffffff';
+    const navbarColor = getComputedStyle(document.documentElement).getPropertyValue('--navbar-bg') || '#1e1e1e';
+    const buttonColor = getComputedStyle(document.documentElement).getPropertyValue('--button-bg') || '#000000';
+    const hoverColor = getComputedStyle(document.documentElement).getPropertyValue('--button-hover') || '#ff0000';
+
+    // Set the color picker values based on the CSS variable values
+    document.getElementById('text-color-picker').value = localStorage.getItem('text-color') || textColor.trim();
+    document.getElementById('navbar-bg-picker').value = localStorage.getItem('navbar-bg') || navbarColor.trim();
+    document.getElementById('button-bg-picker').value = localStorage.getItem('button-bg') || buttonColor.trim();
+    document.getElementById('button-hover-picker').value = localStorage.getItem('button-hover') || hoverColor.trim();
+}
+
+
+        // Function to update background image across iframes
+        function updateBackgroundImage() {
+            const customBackground = localStorage.getItem('customBackground');
+            if (customBackground) {
+                document.body.style.backgroundImage = `url(${customBackground})`;
+                const iframe = document.getElementById('homepage');
+                iframe.contentWindow.postMessage({ action: 'updateBackground', background: customBackground }, '*');
+            }
+        }
+
+        // Function to show iframe
+        function showIframe(id) {
+            document.querySelectorAll('iframe').forEach(iframe => iframe.classList.remove('active'));
+            const iframe = document.getElementById(id);
+            if (iframe) {
+                iframe.classList.add('active');
+            }
+        }
+
+        // Onload logic
+        window.onload = function() {
+            const defaultPage = localStorage.getItem('defaultPage') || 'homepage';
+            showIframe(defaultPage);
+            updateBackgroundImage();  // Apply saved background if any
+
+            const textColor = localStorage.getItem('text-color');
+            const navbarColor = localStorage.getItem('navbar-bg');
+            const buttonColor = localStorage.getItem('button-bg');
+            const hoverColor = localStorage.getItem('button-hover');
+
+            if (textColor) document.documentElement.style.setProperty('--text-color', textColor);
+            if (navbarColor) document.documentElement.style.setProperty('--navbar-bg', navbarColor);
+            if (buttonColor) document.documentElement.style.setProperty('--button-bg', buttonColor);
+            if (hoverColor) document.documentElement.style.setProperty('--button-hover', hoverColor);
+
+    updateColorCircles();  // Ensure the circles display the correct color
+    updateColorPickers();  // Ensure the color pickers display the correct color
+};
+
+// Function to set the selected color and update CSS variable
+function setColor(variable, color) {
+    document.documentElement.style.setProperty(`--${variable}`, color);
+    localStorage.setItem(variable, color);
+    updateColorCircles();
+};
+
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'requestBackground') {
+                updateBackgroundImage();
+            }
+        }, false);
     </script>
 </body>
 </html>
