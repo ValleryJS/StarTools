@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarTools Inventory Manager</title>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- Stylesheet -->
+    <style>
+        /* Root Variables for Consistent Styling */
+        :root {
+            --background-color: #2e2e2e;
+            --text-color: #ffffff;
+            --navbar-bg: linear-gradient(135deg, #1e1e1e, #444);
+            --button-bg: #757575; /* Changed to green */
+            --button-hover: #3d3d3d; /* Darker green on hover */
+            --border-color: #444;
+            --accent-color: #ffffff;
+            --highlight-color: #888888;
+        }
+
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-button {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 0.95em;
+            transition: background-color 0.3s;
+        }
+
+        .tab-button.active {
+            background-color: var(--button-hover);
+            font-weight: bold;
+        }
+
+        .tab-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Calculator and Filter Sections */
+        .combined-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            background-color: #3c3c3c;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .combined-section div {
+            flex: 1;
+        }
+
+        .calculator h2, .filter-section h2 {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .calculator label, .filter-section label {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .calculator input, .calculator select, .filter-section select {
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            background-color: #555;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .calculator p {
+            font-size: 0.9em;
+        }
+
+        /* Buttons */
+        button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px; /* Increased padding */
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em; /* Slightly increased font size */
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            background-color: #3c3c3c;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85em;
+        }
+
+        th {
+            background-color: var(--navbar-bg);
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .total-value {
+            font-weight: bold;
+            color: var(--highlight-color);
+        }
+
+        /* Action Buttons in Table */
+        .action-button {
+            background-color: #ff5555;
+            color: var(--text-color);
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #ff7777;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .combined-section {
+                flex-direction: column;
+            }
+
+            .combined-section div {
+                margin-bottom: 10px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Title -->
+    <h1>StarTools Inventory Manager</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'Weapons')">Weapons</button>
+        <button class="tab-button" onclick="openTab(event, 'Armor')">Armor</button>
+        <button class="tab-button" onclick="openTab(event, 'Misc')">Misc Items</button>
+        <button class="tab-button" onclick="openTab(event, 'Ammo')">Ammo</button>
+        <button class="tab-button" onclick="openTab(event, 'Sustenance')">Sustenance</button>
+        <button class="tab-button" onclick="openTab(event, 'Cargo')">Cargo</button>
+    </div>
+
+    <!-- Tab Content Sections -->
+    <!-- Weapons Tab -->
+    <div id="Weapons" class="tab-content active">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemWeapons">Select Item:</label>
+                <select id="calculatorItemWeapons" onchange="calculateTotal('Weapons')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountWeapons">Enter Amount:</label>
+                <input type="number" id="calculatorAmountWeapons" value="1" min="1" onchange="calculateTotal('Weapons')">
+
+                <p>Total Cost: <span id="calculatorTotalWeapons">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterWeapons">Category:</label>
+                <select id="categoryFilterWeapons" onchange="filterItems('Weapons')">
+                    <option value="">All Categories</option>
+                    <option value="Assault Rifles">Assault Rifles</option>
+                    <option value="Sniper Rifles">Sniper Rifles</option>
+                    <option value="Pistols">Pistols</option>
+                    <option value="Shotguns">Shotguns</option>
+                    <option value="Submachine Guns">Submachine Guns</option>
+                    <option value="Heavy Weapons">Heavy Weapons</option>
+                </select>
+
+                <label for="rarityFilterWeapons">Rarity:</label>
+                <select id="rarityFilterWeapons" onchange="filterItems('Weapons')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Weapons Section -->
+        <div class="section">
+            <button onclick="addRow('weaponsTable')"><i class="fas fa-plus"></i> Add New Weapon</button>
+            <button onclick="sortTableAlphabetically('weaponsTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="weaponsTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Weapon items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Armor Tab -->
+    <div id="Armor" class="tab-content">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemArmor">Select Item:</label>
+                <select id="calculatorItemArmor" onchange="calculateTotal('Armor')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountArmor">Enter Amount:</label>
+                <input type="number" id="calculatorAmountArmor" value="1" min="1" onchange="calculateTotal('Armor')">
+
+                <p>Total Cost: <span id="calculatorTotalArmor">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterArmor">Category:</label>
+                <select id="categoryFilterArmor" onchange="filterItems('Armor')">
+                    <option value="">All Categories</option>
+                    <option value="Helmets">Helmets</option>
+                    <option value="Chest Armor">Chest Armor</option>
+                    <option value="Arms Armor">Arms Armor</option>
+                    <option value="Leg Armor">Leg Armor</option>
+                    <option value="Undersuits">Undersuits</option>
+                    <option value="Backpacks">Backpacks</option>
+                </select>
+
+                <label for="rarityFilterArmor">Rarity:</label>
+                <select id="rarityFilterArmor" onchange="filterItems('Armor')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Armor Section -->
+        <div class="section">
+            <button onclick="addRow('armorTable')"><i class="fas fa-plus"></i> Add New Armor</button>
+            <button onclick="sortTableAlphabetically('armorTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="armorTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Armor items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Misc Items Tab -->
+    <div id="Misc" class="tab-content">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemMisc">Select Item:</label>
+                <select id="calculatorItemMisc" onchange="calculateTotal('Misc')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountMisc">Enter Amount:</label>
+                <input type="number" id="calculatorAmountMisc" value="1" min="1" onchange="calculateTotal('Misc')">
+
+                <p>Total Cost: <span id="calculatorTotalMisc">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterMisc">Category:</label>
+                <select id="categoryFilterMisc" onchange="filterItems('Misc')">
+                    <option value="">All Categories</option>
+                    <option value="Utility Items">Utility Items</option>
+                    <option value="Multi-tools">Multi-tools</option>
+                    <option value="Components">Components</option>
+                    <option value="Attachments">Attachments</option>
+                </select>
+
+                <label for="rarityFilterMisc">Rarity:</label>
+                <select id="rarityFilterMisc" onchange="filterItems('Misc')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Misc Items Section -->
+        <div class="section">
+            <button onclick="addRow('miscTable')"><i class="fas fa-plus"></i> Add New Misc Item</button>
+            <button onclick="sortTableAlphabetically('miscTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="miscTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Misc items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Ammo Tab -->
+    <div id="Ammo" class="tab-content">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemAmmo">Select Item:</label>
+                <select id="calculatorItemAmmo" onchange="calculateTotal('Ammo')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountAmmo">Enter Amount:</label>
+                <input type="number" id="calculatorAmountAmmo" value="1" min="1" onchange="calculateTotal('Ammo')">
+
+                <p>Total Cost: <span id="calculatorTotalAmmo">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterAmmo">Category:</label>
+                <select id="categoryFilterAmmo" onchange="filterItems('Ammo')">
+                    <option value="">All Categories</option>
+                    <option value="Ballistic Ammo">Ballistic Ammo</option>
+                    <option value="Energy Cells">Energy Cells</option>
+                    <option value="Missiles">Missiles</option>
+                    <option value="Torpedoes">Torpedoes</option>
+                </select>
+
+                <label for="rarityFilterAmmo">Rarity:</label>
+                <select id="rarityFilterAmmo" onchange="filterItems('Ammo')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Ammo Section -->
+        <div class="section">
+            <button onclick="addRow('ammoTable')"><i class="fas fa-plus"></i> Add New Ammo</button>
+            <button onclick="sortTableAlphabetically('ammoTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="ammoTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ammo items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Sustenance Tab -->
+    <div id="Sustenance" class="tab-content">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemSustenance">Select Item:</label>
+                <select id="calculatorItemSustenance" onchange="calculateTotal('Sustenance')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountSustenance">Enter Amount:</label>
+                <input type="number" id="calculatorAmountSustenance" value="1" min="1" onchange="calculateTotal('Sustenance')">
+
+                <p>Total Cost: <span id="calculatorTotalSustenance">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterSustenance">Category:</label>
+                <select id="categoryFilterSustenance" onchange="filterItems('Sustenance')">
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Drink">Drink</option>
+                    <option value="Medical Supplies">Medical Supplies</option>
+                    <option value="Drugs">Drugs</option>
+                </select>
+
+                <label for="rarityFilterSustenance">Rarity:</label>
+                <select id="rarityFilterSustenance" onchange="filterItems('Sustenance')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Sustenance Section -->
+        <div class="section">
+            <button onclick="addRow('sustenanceTable')"><i class="fas fa-plus"></i> Add New Item</button>
+            <button onclick="sortTableAlphabetically('sustenanceTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="sustenanceTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sustenance items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Cargo Tab -->
+    <div id="Cargo" class="tab-content">
+        <!-- Combined Calculator and Filter Section -->
+        <div class="combined-section">
+            <!-- Calculator Section -->
+            <div class="calculator">
+                <h2>Calculator</h2>
+                <label for="calculatorItemCargo">Select Item:</label>
+                <select id="calculatorItemCargo" onchange="calculateTotal('Cargo')">
+                    <option value="">-- Select an Item --</option>
+                </select>
+
+                <label for="calculatorAmountCargo">Enter Amount:</label>
+                <input type="number" id="calculatorAmountCargo" value="1" min="1" onchange="calculateTotal('Cargo')">
+
+                <p>Total Cost: <span id="calculatorTotalCargo">0</span> UEC</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2>Filter Items</h2>
+                <label for="categoryFilterCargo">Category:</label>
+                <select id="categoryFilterCargo" onchange="filterItems('Cargo')">
+                    <option value="">All Categories</option>
+                    <option value="Minerals">Minerals</option>
+                    <option value="Metals">Metals</option>
+                    <option value="Gases">Gases</option>
+                    <option value="Agricultural">Agricultural</option>
+                    <option value="Legal Goods">Legal Goods</option>
+                    <option value="Illegal Goods">Illegal Goods</option>
+                </select>
+
+                <label for="rarityFilterCargo">Rarity:</label>
+                <select id="rarityFilterCargo" onchange="filterItems('Cargo')">
+                    <option value="">All Rarities</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Cargo Section -->
+        <div class="section">
+            <button onclick="addRow('cargoTable')"><i class="fas fa-plus"></i> Add New Cargo</button>
+            <button onclick="sortTableAlphabetically('cargoTable')"><i class="fas fa-sort-alpha-down"></i> Sort Alphabetically</button>
+
+            <table id="cargoTable">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Rarity</th>
+                        <th>Amount</th>
+                        <th>Price Per Unit</th>
+                        <th>Total Value</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Cargo items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Total Inventory Value -->
+    <div class="inventory-total">
+        Total Inventory Value: <span id="totalInventoryValue">0</span> UEC
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Global Variables for Table IDs
+        const tableIds = {
+            'Weapons': 'weaponsTable',
+            'Armor': 'armorTable',
+            'Misc': 'miscTable',
+            'Ammo': 'ammoTable',
+            'Sustenance': 'sustenanceTable',
+            'Cargo': 'cargoTable'
+        };
+
+        // Load saved data when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            for (let tab in tableIds) {
+                loadData(tableIds[tab]);
+                populateCalculatorItems(tab);
+            }
+            updateInventoryTotal();
+        });
+
+        // Tab Functionality
+        function openTab(event, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let content of tabContents) {
+                content.classList.remove('active');
+            }
+
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let button of tabButtons) {
+                button.classList.remove('active');
+            }
+
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function updateTotal(tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const rows = tableBody.rows;
+
+            for (let i = 0; i < rows.length; i++) {
+                let amountCell = rows[i].cells[3];
+                let priceCell = rows[i].cells[4];
+                let totalValueCell = rows[i].cells[5];
+
+                let amount = parseInt(amountCell.innerText) || 0;
+                let pricePerUnit = parseInt(priceCell.innerText) || 0;
+                let totalValue = amount * pricePerUnit;
+
+                totalValueCell.innerText = totalValue;
+            }
+
+            saveData(tableId);
+            updateInventoryTotal();
+            const tabName = getTabNameByTableId(tableId);
+            populateCalculatorItems(tabName);
+            filterItems(tabName);
+        }
+
+        function addRow(tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            let newRow = tableBody.insertRow();
+
+            // Item Name
+            let itemNameCell = newRow.insertCell(0);
+            itemNameCell.contentEditable = "true";
+            itemNameCell.innerText = "New Item";
+            itemNameCell.oninput = () => updateTotal(tableId);
+
+            // Category
+            let categoryCell = newRow.insertCell(1);
+            let categorySelect = document.createElement('select');
+            categorySelect.innerHTML = getCategoryOptions(tableId);
+            categorySelect.onchange = () => updateTotal(tableId);
+            categoryCell.appendChild(categorySelect);
+
+            // Rarity
+            let rarityCell = newRow.insertCell(2);
+            let raritySelect = document.createElement('select');
+            raritySelect.innerHTML = `
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Rare">Rare</option>
+                <option value="Ultra Rare">Ultra Rare</option>
+                <option value="Legendary">Legendary</option>
+            `;
+            raritySelect.onchange = () => updateTotal(tableId);
+            rarityCell.appendChild(raritySelect);
+
+            // Amount
+            let amountCell = newRow.insertCell(3);
+            amountCell.contentEditable = "true";
+            amountCell.innerText = "0";
+            amountCell.oninput = () => updateTotal(tableId);
+
+            // Price Per Unit
+            let priceCell = newRow.insertCell(4);
+            priceCell.contentEditable = "true";
+            priceCell.innerText = "0";
+            priceCell.oninput = () => updateTotal(tableId);
+
+            // Total Value
+            let totalValueCell = newRow.insertCell(5);
+            totalValueCell.className = "total-value";
+            totalValueCell.innerText = "0";
+
+            // Action
+            let actionCell = newRow.insertCell(6);
+            let deleteButton = document.createElement('button');
+            deleteButton.className = "action-button";
+            deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+            deleteButton.onclick = () => removeRow(deleteButton);
+            actionCell.appendChild(deleteButton);
+
+            updateTotal(tableId);
+        }
+
+        function removeRow(button) {
+            const row = button.parentElement.parentElement;
+            const tableId = row.parentElement.parentElement.id;
+            row.remove();
+            updateTotal(tableId);
+        }
+
+        function saveData(tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            let data = [];
+
+            for (let row of tableBody.rows) {
+                let item = {
+                    name: row.cells[0].innerText,
+                    category: row.cells[1].children[0].value,
+                    rarity: row.cells[2].children[0].value,
+                    amount: row.cells[3].innerText,
+                    price: row.cells[4].innerText,
+                    total: row.cells[5].innerText
+                };
+                data.push(item);
+            }
+
+            localStorage.setItem(tableId, JSON.stringify(data));
+        }
+
+        function loadData(tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+            let data = JSON.parse(localStorage.getItem(tableId)) || [];
+
+            data.forEach(item => {
+                let newRow = tableBody.insertRow();
+
+                // Item Name
+                let itemNameCell = newRow.insertCell(0);
+                itemNameCell.contentEditable = "true";
+                itemNameCell.innerText = item.name;
+                itemNameCell.oninput = () => updateTotal(tableId);
+
+                // Category
+                let categoryCell = newRow.insertCell(1);
+                let categorySelect = document.createElement('select');
+                categorySelect.innerHTML = getCategoryOptions(tableId);
+                categorySelect.value = item.category;
+                categorySelect.onchange = () => updateTotal(tableId);
+                categoryCell.appendChild(categorySelect);
+
+                // Rarity
+                let rarityCell = newRow.insertCell(2);
+                let raritySelect = document.createElement('select');
+                raritySelect.innerHTML = `
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                    <option value="Ultra Rare">Ultra Rare</option>
+                    <option value="Legendary">Legendary</option>
+                `;
+                raritySelect.value = item.rarity;
+                raritySelect.onchange = () => updateTotal(tableId);
+                rarityCell.appendChild(raritySelect);
+
+                // Amount
+                let amountCell = newRow.insertCell(3);
+                amountCell.contentEditable = "true";
+                amountCell.innerText = item.amount;
+                amountCell.oninput = () => updateTotal(tableId);
+
+                // Price Per Unit
+                let priceCell = newRow.insertCell(4);
+                priceCell.contentEditable = "true";
+                priceCell.innerText = item.price;
+                priceCell.oninput = () => updateTotal(tableId);
+
+                // Total Value
+                let totalValueCell = newRow.insertCell(5);
+                totalValueCell.className = "total-value";
+                totalValueCell.innerText = item.total;
+
+                // Action
+                let actionCell = newRow.insertCell(6);
+                let deleteButton = document.createElement('button');
+                deleteButton.className = "action-button";
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+                deleteButton.onclick = () => removeRow(deleteButton);
+                actionCell.appendChild(deleteButton);
+            });
+
+            updateTotal(tableId);
+        }
+
+        function updateInventoryTotal() {
+            let totalValue = 0;
+
+            for (let tab in tableIds) {
+                const tableId = tableIds[tab];
+                const tableBody = document.getElementById(tableId).querySelector('tbody');
+                for (let row of tableBody.rows) {
+                    let totalCell = row.cells[5];
+                    totalValue += parseInt(totalCell.innerText) || 0;
+                }
+            }
+
+            document.getElementById('totalInventoryValue').innerText = totalValue;
+        }
+
+        function sortTableAlphabetically(tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const rows = Array.from(tableBody.rows);
+
+            rows.sort((a, b) => {
+                const nameA = a.cells[0].innerText.toLowerCase();
+                const nameB = b.cells[0].innerText.toLowerCase();
+                return nameA.localeCompare(nameB);
+            });
+
+            // Reattach sorted rows
+            tableBody.innerHTML = '';
+            rows.forEach(row => tableBody.appendChild(row));
+
+            updateTotal(tableId);
+        }
+
+        function filterItems(tabName) {
+            const tableId = tableIds[tabName];
+            const categoryFilter = document.getElementById(`categoryFilter${tabName}`).value;
+            const rarityFilter = document.getElementById(`rarityFilter${tabName}`).value;
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            for (let row of tableBody.rows) {
+                const category = row.cells[1].children[0].value;
+                const rarity = row.cells[2].children[0].value;
+
+                const categoryMatch = !categoryFilter || category === categoryFilter;
+                const rarityMatch = !rarityFilter || rarity === rarityFilter;
+
+                row.style.display = categoryMatch && rarityMatch ? '' : 'none';
+            }
+        }
+
+        function populateCalculatorItems(tabName) {
+            const tableId = tableIds[tabName];
+            const itemSelect = document.getElementById(`calculatorItem${tabName}`);
+            itemSelect.innerHTML = '<option value="">-- Select an Item --</option>';
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            for (let row of tableBody.rows) {
+                const itemName = row.cells[0].innerText;
+                const pricePerUnit = row.cells[4].innerText;
+                const option = document.createElement('option');
+                option.value = `${itemName}|${pricePerUnit}`;
+                option.innerText = itemName;
+                itemSelect.appendChild(option);
+            }
+        }
+
+        function calculateTotal(tabName) {
+            const selectedItem = document.getElementById(`calculatorItem${tabName}`).value;
+            const amount = parseInt(document.getElementById(`calculatorAmount${tabName}`).value) || 0;
+            const totalDisplay = document.getElementById(`calculatorTotal${tabName}`);
+
+            if (selectedItem && amount > 0) {
+                const [itemName, pricePerUnit] = selectedItem.split('|');
+                const totalCost = parseInt(pricePerUnit) * amount;
+                totalDisplay.innerText = totalCost;
+            } else {
+                totalDisplay.innerText = '0';
+            }
+        }
+
+        function getCategoryOptions(tableId) {
+            switch (tableId) {
+                case 'weaponsTable':
+                    return `
+                        <option value="Assault Rifles">Assault Rifles</option>
+                        <option value="Sniper Rifles">Sniper Rifles</option>
+                        <option value="Pistols">Pistols</option>
+                        <option value="Shotguns">Shotguns</option>
+                        <option value="Submachine Guns">Submachine Guns</option>
+                        <option value="Heavy Weapons">Heavy Weapons</option>
+                    `;
+                case 'armorTable':
+                    return `
+                        <option value="Helmets">Helmets</option>
+                        <option value="Chest Armor">Chest Armor</option>
+                        <option value="Arms Armor">Arms Armor</option>
+                        <option value="Leg Armor">Leg Armor</option>
+                        <option value="Undersuits">Undersuits</option>
+                        <option value="Backpacks">Backpacks</option>
+                    `;
+                case 'miscTable':
+                    return `
+                        <option value="Utility Items">Utility Items</option>
+                        <option value="Multi-tools">Multi-tools</option>
+                        <option value="Components">Components</option>
+                        <option value="Attachments">Attachments</option>
+                    `;
+                case 'ammoTable':
+                    return `
+                        <option value="Ballistic Ammo">Ballistic Ammo</option>
+                        <option value="Energy Cells">Energy Cells</option>
+                        <option value="Missiles">Missiles</option>
+                        <option value="Torpedoes">Torpedoes</option>
+                    `;
+                case 'sustenanceTable':
+                    return `
+                        <option value="Food">Food</option>
+                        <option value="Drink">Drink</option>
+                        <option value="Medical Supplies">Medical Supplies</option>
+                        <option value="Drugs">Drugs</option>
+                    `;
+                case 'cargoTable':
+                    return `
+                        <option value="Minerals">Minerals</option>
+                        <option value="Metals">Metals</option>
+                        <option value="Gases">Gases</option>
+                        <option value="Agricultural">Agricultural</option>
+                        <option value="Legal Goods">Legal Goods</option>
+                        <option value="Illegal Goods">Illegal Goods</option>
+                    `;
+                default:
+                    return '<option value="">-- Select --</option>';
+            }
+        }
+
+        function getTabNameByTableId(tableId) {
+            for (let tab in tableIds) {
+                if (tableIds[tab] === tableId) {
+                    return tab;
+                }
+            }
+            return null;
+        }
+    </script>
+</body>
+</html>

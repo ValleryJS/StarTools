@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta Tags and Existing Head Content -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarTools</title>
     <style>
-        /* Global Styles */
+        /* Existing Global Styles */
         * {
             margin: 0;
             padding: 0;
@@ -18,6 +19,7 @@
         }
 
         body {
+            
             font-family: Arial, sans-serif;
             background-color: #121212;
             color: #fff;
@@ -28,6 +30,7 @@
             margin: 0;
             overflow: hidden;
             transition: background-image 0.3s ease-in-out;
+            background-image: url('./img/Background_Stars.png');
         }
 
         .content {
@@ -164,6 +167,36 @@
             transform: scale(1) translateY(0);
         }
 
+        /* New Toolbar Styles */
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.0);
+            border-top: 0px solid #444;
+            border-bottom: 0px solid #444;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .toolbar-button {
+            padding: 8px 12px;
+            background-color: #1e1e1e;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            font-size: 1em;
+        }
+
+        .toolbar-button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
         @media screen and (max-width: 768px) {
             .text-wrapper {
                 font-size: 6vw;
@@ -173,6 +206,9 @@
             }
             .text-wrapper-3 {
                 font-size: 2.5vw;
+            }
+            .toolbar-button {
+                font-size: 0.9em;
             }
         }
     </style>
@@ -193,6 +229,7 @@
         </div>
 
         <div class="card-stack">
+            <!-- Existing Cards -->
             <div class="card" onclick="showIframe('iframe1')">
                 <img class="img" src="img/erkul_new.png" alt="Erkul Logo">
                 <div class="text-wrapper-2">Ship Builder</div>
@@ -234,18 +271,34 @@
                 <div class="text-wrapper-3">Cornerstone</div>
             </div>
         </div>
+
+        <!-- New Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-button" onclick="openTool('tool1')">inventory Manager</div>
+            <!--<div class="toolbar-button" onclick="openTool('tool2')">Coming Soon</div>-->
+            <!--<div class="toolbar-button" onclick="openTool('tool3')">Coming Soon</div>-->
+            <!-- Add more toolbar buttons as needed -->
+        </div>
+
     </div>
 
     <!-- Iframe Container -->
     <div id="iframe-container">
+        <!-- Existing Iframes -->
         <iframe id="iframe1" src="https://www.erkul.games"></iframe>
         <iframe id="iframe2" src="https://finder.cstone.space"></iframe>
         <iframe id="iframe3" src="https://uexcorp.space/"></iframe>
-        <iframe id="verseguide" src="https://verseguide.com"></iframe>
         <iframe id="gallog" src="https://gallog.co"></iframe>
-        <iframe id="arkmap" src="https://survey.cstone.space"></iframe>
         <iframe id="iframe4" src="https://regolith.rocks"></iframe>
         <iframe id="iframe5" src="https://snareplan.dolus.eu"></iframe>
+        <iframe id="verseguide" src="https://verseguide.com"></iframe>
+        <iframe id="arkmap" src="https://survey.cstone.space"></iframe>
+
+        <!-- Iframes for Toolbar Tools -->
+        <iframe id="tool1" src="inventory.html"></iframe>
+        <iframe id="tool2" src="URL_FOR_TOOL_2"></iframe>
+        <iframe id="tool3" src="URL_FOR_TOOL_3"></iframe>
+        <!-- Replace 'URL_FOR_TOOL_X' with actual URLs when ready -->
     </div>
 
     <script>
@@ -271,14 +324,33 @@
             if (event.data.action === 'updateBackground') {
                 document.body.style.backgroundImage = `url(${event.data.background})`;
             }
-            
         }, false);
-
 
         // Request background on load
         window.onload = function() {
             window.parent.postMessage({ action: 'requestBackground' }, '*');
         };
+
+        // Existing showIframe function
+        function showIframe(id) {
+            // Hide all iframes
+            const iframes = document.querySelectorAll('#iframe-container iframe');
+            iframes.forEach(iframe => iframe.classList.remove('active'));
+
+            // Show the selected iframe
+            const iframe = document.getElementById(id);
+            if (iframe) {
+                iframe.classList.add('active');
+                document.getElementById('iframe-container').style.display = 'block';
+            }
+        }
+
+        // Function to handle toolbar button clicks
+        function openTool(toolId) {
+            // For now, you can define the tools later
+            // This function will show the iframe corresponding to the toolId
+            showIframe(toolId);
+        }
     </script>
 
 </body>
