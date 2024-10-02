@@ -1,6 +1,6 @@
 {
   "name": "startools",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A collection of all must-have StarCitizen tools",
   "main": "main.js",
   "scripts": {
@@ -35,9 +35,12 @@
       "renderer.js",
       "package.json",
       "indexnew.html",
+      "inventory.html",
+      "packagemanager.html",
       "splash.html",
       "radio_browser.html",
       "img/Background_Stars.png",
+      "img/CovalexLogoBlack.png",
       "img/content.png",
       "img/cornerstone-1.png",
       "img/dallus.png",

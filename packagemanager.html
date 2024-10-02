@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Covalex Package Manager</title>
+    <!-- Include futuristic font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for colors */
+        :root {
+            --primary-color: #fabb3b; /* Covalex Yellow */
+            --accent-color: #744c2c;  /* Covalex Brown */
+            --background-color: #1a1a1a; /* Darker Background */
+            --foreground-color: #2c2c2c; /* Foreground panels */
+            --text-color: #ffffff;
+            --muted-text-color: #888888;
+            --hover-color: #e0a732; /* Slightly Darker Yellow */
+            --error-color: #f44336; /* Red Color */
+        }
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            background-color: var(--accent-color);
+            padding: 15px;
+            border-bottom: 4px solid var(--primary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        header img {
+            max-width: 100%;
+            height: auto;
+            width: 200px; /* Adjust the maximum width as needed */
+            margin-right: 20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+        }
+        main {
+            padding: 20px;
+        }
+        .stats-section {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--foreground-color);
+            padding: 20px;
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .stats-section div {
+            text-align: center;
+            flex: 1;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+        .stats-section div:not(:last-child) {
+            border-right: 1px solid var(--accent-color);
+        }
+        .stats-section span {
+            display: block;
+            color: var(--text-color);
+            font-size: 24px;
+            margin-top: 5px;
+        }
+        .form-section, .filter-section {
+            background-color: var(--foreground-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .filter-section .form-group {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+        .filter-section label {
+            margin-right: 10px;
+            flex: none;
+        }
+        .filter-section select {
+            width: auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        label {
+            flex: 0 0 160px;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+        input[type="text"], select {
+            flex: 1;
+            padding: 10px;
+            background-color: #1a1a1a;
+            color: var(--text-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            min-width: 200px;
+            font-size: 16px;
+        }
+        input::placeholder {
+            color: #bbbbbb;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        button:hover {
+            background-color: var(--hover-color);
+            box-shadow: 0 0 10px var(--hover-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--foreground-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #555;
+            font-size: 16px;
+        }
+        th {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+        tr:nth-child(even) {
+            background-color: #242424;
+        }
+        tr:hover {
+            background-color: #333;
+        }
+        .delivered {
+            text-decoration: line-through;
+            color: var(--muted-text-color);
+        }
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 5px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .delete-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: var(--error-color);
+            color: var(--text-color);
+            border-color: var(--error-color);
+        }
+        .delete-all-btn {
+            background-color: var(--error-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .delete-all-btn:hover {
+            background-color: #d32f2f;
+            box-shadow: 0 0 10px #d32f2f;
+        }
+        @media (max-width: 600px) {
+            .stats-section {
+                flex-direction: column;
+            }
+            .stats-section div:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid var(--accent-color);
+                width: 100%;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-section .form-group {
+                margin-bottom: 10px;
+            }
+            label {
+                flex: 1 0 100%;
+                margin-bottom: 5px;
+            }
+            input[type="text"], select {
+                flex: 1 0 100%;
+            }
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            header h1 {
+                font-size: 24px;
+            }
+            header img {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="/img/CovalexLogoBlack.png" alt="Covalex Shipping Logo">
+    <h1>Covalex Package Manager</h1>
+</header>
+
+<main>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div>
+            Total Packages
+            <span id="totalPackages">0</span>
+        </div>
+        <div>
+            Total Delivered
+            <span id="totalDelivered">0</span>
+        </div>
+        <div>
+            Left to Deliver
+            <span id="leftToDeliver">0</span>
+        </div>
+    </div>
+
+    <!-- Filter by Location -->
+    <div class="filter-section">
+        <div class="form-group">
+            <label for="locationFilter">Filter by Location:</label>
+            <select id="locationFilter">
+                <option value="All">All Locations</option>
+            </select>
+        </div>
+        <button id="deleteAllBtn" class="delete-all-btn">Delete All Packages</button>
+    </div>
+
+    <div class="form-section">
+        <form id="packageForm">
+            <div class="form-group">
+                <label for="packageId">Package ID:</label>
+                <input type="text" id="packageId" name="packageId" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Package Description:</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Delivery Location:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            <button type="submit">Add Package</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Delivered</th>
+                    <th>Package ID</th>
+                    <th>Description</th>
+                    <th>Delivery Location</th>
+                    <th style="width: 100px;">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="packageList">
+                <!-- Package entries will appear here -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    // JavaScript code remains the same as before
+
+    // Array to store package data
+    let packages = [];
+
+    // Set of unique locations for the dropdown
+    let locationsSet = new Set();
+
+    // Load packages from local storage on page load
+    window.onload = function() {
+        const storedPackages = JSON.parse(localStorage.getItem('packages'));
+        if (storedPackages) {
+            packages = storedPackages;
+            // Populate the locations set
+            packages.forEach(pkg => locationsSet.add(pkg.location));
+            // Update the location filter dropdown
+            updateLocationFilter();
+            // Display packages
+            displayPackages();
+            // Update counters
+            updateCounters();
+        }
+    };
+
+    // Add event listener to the form
+    document.getElementById('packageForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get form values
+        const packageId = document.getElementById('packageId').value;
+        const description = document.getElementById('description').value;
+        const location = document.getElementById('location').value;
+
+        // Create package object
+        const package = {
+            packageId,
+            description,
+            location,
+            delivered: false
+        };
+
+        // Add package to array
+        packages.push(package);
+
+        // Update locations set
+        locationsSet.add(location);
+
+        // Update the location filter dropdown
+        updateLocationFilter();
+
+        // Update the table display
+        displayPackages();
+
+        // Save to local storage
+        savePackages();
+
+        // Update counters
+        updateCounters();
+
+        // Clear the form fields
+        document.getElementById('packageForm').reset();
+    });
+
+    // Function to update location filter dropdown
+    function updateLocationFilter() {
+        const locationFilter = document.getElementById('locationFilter');
+        locationFilter.innerHTML = '<option value="All">All Locations</option>';
+
+        // Convert set to array and sort
+        const sortedLocations = Array.from(locationsSet).sort();
+
+        sortedLocations.forEach(loc => {
+            const option = document.createElement('option');
+            option.value = loc;
+            option.textContent = loc;
+            locationFilter.appendChild(option);
+        });
+    }
+
+    // Function to display packages
+    function displayPackages() {
+        const table = document.getElementById('packageList');
+        table.innerHTML = '';
+
+        // Get filter value
+        const filterValue = document.getElementById('locationFilter').value;
+
+        packages.forEach((pkg, index) => {
+            // Filter by location
+            if (filterValue === 'All' || pkg.location === filterValue) {
+                const row = table.insertRow();
+
+                // Delivered Checkbox
+                const deliveredCell = row.insertCell(0);
+                deliveredCell.style.textAlign = 'center';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = pkg.delivered;
+                checkbox.addEventListener('change', function() {
+                    pkg.delivered = this.checked;
+                    if (pkg.delivered) {
+                        row.classList.add('delivered');
+                    } else {
+                        row.classList.remove('delivered');
+                    }
+                    // Save to local storage
+                    savePackages();
+                    // Update counters
+                    updateCounters();
+                });
+                deliveredCell.appendChild(checkbox);
+
+                // Package ID
+                const cellId = row.insertCell(1);
+                cellId.textContent = pkg.packageId;
+
+                // Description
+                const cellDescription = row.insertCell(2);
+                cellDescription.textContent = pkg.description;
+
+                // Location
+                const cellLocation = row.insertCell(3);
+                cellLocation.textContent = pkg.location;
+
+                // Delete Button
+                const deleteCell = row.insertCell(4);
+                deleteCell.style.textAlign = 'center';
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.addEventListener('click', function() {
+                    // Remove package from array
+                    packages.splice(index, 1);
+                    // Update locations set
+                    updateLocationsSet();
+                    // Update location filter dropdown
+                    updateLocationFilter();
+                    // Update display
+                    displayPackages();
+                    // Save to local storage
+                    savePackages();
+                    // Update counters
+                    updateCounters();
+                });
+                deleteCell.appendChild(deleteBtn);
+
+                // Apply delivered class if necessary
+                if (pkg.delivered) {
+                    row.classList.add('delivered');
+                }
+            }
+        });
+    }
+
+    // Function to update the locations set after deletion
+    function updateLocationsSet() {
+        locationsSet.clear();
+        packages.forEach(pkg => locationsSet.add(pkg.location));
+    }
+
+    // Function to save packages to local storage
+    function savePackages() {
+        localStorage.setItem('packages', JSON.stringify(packages));
+    }
+
+    // Event listener for location filter
+    document.getElementById('locationFilter').addEventListener('change', displayPackages);
+
+    // Event listener for Delete All Packages button
+    document.getElementById('deleteAllBtn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete all packages?')) {
+            packages = [];
+            locationsSet.clear();
+            updateLocationFilter();
+            displayPackages();
+            savePackages();
+            updateCounters();
+        }
+    });
+
+    // Function to update the counters
+    function updateCounters() {
+        const totalPackages = packages.length;
+        const totalDelivered = packages.filter(pkg => pkg.delivered).length;
+        const leftToDeliver = totalPackages - totalDelivered;
+
+        document.getElementById('totalPackages').textContent = totalPackages;
+        document.getElementById('totalDelivered').textContent = totalDelivered;
+        document.getElementById('leftToDeliver').textContent = leftToDeliver;
+    }
+</script>
+
+</body>
+</html>
