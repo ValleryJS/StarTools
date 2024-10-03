@@ -1,6 +1,6 @@
 {
   "name": "startools",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "A collection of all must-have StarCitizen tools",
   "main": "main.js",
   "scripts": {
@@ -55,7 +55,7 @@
       "img/cornerstone_new.png",
       "img/erkul_new.png",
       "img/gallog_new.png",
-      "bootup.mp3"
+      "BootSound05.mp3"
     ],
     "directories": {
       "output": "release"

@@ -16,6 +16,7 @@
             --muted-text-color: #888888;
             --hover-color: #e0a732; /* Slightly Darker Yellow */
             --error-color: #f44336; /* Red Color */
+            --divider-color: #555555; /* Divider Color */
         }
         body {
             font-family: 'Orbitron', sans-serif;
@@ -35,7 +36,7 @@
         header img {
             max-width: 100%;
             height: auto;
-            width: 200px; /* Adjust the maximum width as needed */
+            width: 120px;
             margin-right: 20px;
         }
         header h1 {
@@ -48,99 +49,133 @@
             padding: 20px;
         }
         .stats-section {
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: var(--foreground-color);
-            padding: 20px;
+            padding: 15px;
             border: 1px solid var(--accent-color);
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         .stats-section div {
             text-align: center;
             flex: 1;
             color: var(--primary-color);
-            font-size: 18px;
+            font-size: 16px;
+            position: relative;
         }
-        .stats-section div:not(:last-child) {
-            border-right: 1px solid var(--accent-color);
+        /* Add dividers between counters */
+        .stats-section div:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: 0;
+            width: 1px;
+            height: 80%;
+            background-color: var(--divider-color);
         }
         .stats-section span {
             display: block;
             color: var(--text-color);
-            font-size: 24px;
+            font-size: 22px;
             margin-top: 5px;
         }
-        .form-section, .filter-section {
+        .control-section {
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: stretch; /* Updated to stretch items */
             background-color: var(--foreground-color);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 15px;
             border: 1px solid var(--accent-color);
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative; /* Added for divider positioning */
         }
-        .filter-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .filter-container, .form-container {
+            flex: 1 1 48%;
+            margin-bottom: 20px;
         }
-        .filter-section .form-group {
-            display: flex;
-            align-items: center;
-            margin: 0;
+        .filter-container {
+            margin-right: 2%;
         }
-        .filter-section label {
-            margin-right: 10px;
-            flex: none;
-        }
-        .filter-section select {
-            width: auto;
+        /* Add divider between filter and form */
+        .control-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: calc(50% - 0.5px); /* Center the divider */
+            width: 1px;
+            background-color: var(--divider-color);
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
         }
         label {
-            flex: 0 0 160px;
+            flex: 0 0 130px;
             font-weight: bold;
             color: var(--primary-color);
             letter-spacing: 1px;
+            margin-bottom: 5px;
         }
         input[type="text"], select {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             background-color: #1a1a1a;
             color: var(--text-color);
             border: 1px solid var(--primary-color);
             border-radius: 5px;
-            min-width: 200px;
-            font-size: 16px;
+            min-width: 150px;
+            font-size: 14px;
         }
         input::placeholder {
             color: #bbbbbb;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
         }
         button {
             background-color: var(--primary-color);
             color: var(--background-color);
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
+            padding: 10px 16px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s, box-shadow 0.3s;
             font-weight: bold;
             letter-spacing: 1px;
+            flex: 1 1 auto;
         }
         button:hover {
             background-color: var(--hover-color);
             box-shadow: 0 0 10px var(--hover-color);
+        }
+        .delete-all-btn {
+            background-color: var(--error-color);
+            color: var(--text-color);
+            border: none;
+        }
+        .delete-all-btn:hover {
+            background-color: #d32f2f;
+            box-shadow: 0 0 10px #d32f2f;
+        }
+        .table-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow-x: auto;
         }
         table {
             width: 100%;
@@ -149,21 +184,23 @@
             border: 1px solid var(--accent-color);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         th, td {
-            padding: 15px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #555;
-            font-size: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--divider-color);
+            border-right: 1px solid var(--divider-color);
+        }
+        th:last-child, td:last-child {
+            border-right: none;
         }
         th {
             background-color: var(--accent-color);
             color: var(--primary-color);
-            font-size: 18px;
-        }
-        tr:nth-child(even) {
-            background-color: #242424;
+            font-size: 16px;
+            border-bottom: 2px solid var(--divider-color);
         }
         tr:hover {
             background-color: #333;
@@ -176,15 +213,12 @@
             transform: scale(1.2);
             margin-right: 5px;
         }
-        .table-container {
-            overflow-x: auto;
-        }
         .delete-btn {
             background-color: transparent;
             color: var(--primary-color);
             border: 1px solid var(--primary-color);
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             padding: 5px 10px;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
@@ -194,56 +228,54 @@
             color: var(--text-color);
             border-color: var(--error-color);
         }
-        .delete-all-btn {
-            background-color: var(--error-color);
-            color: var(--text-color);
-            border: none;
-            padding: 10px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .delete-all-btn:hover {
-            background-color: #d32f2f;
-            box-shadow: 0 0 10px #d32f2f;
-        }
-        @media (max-width: 600px) {
+        @media (max-width: 800px) {
+            .control-section {
+                flex-direction: column;
+            }
+            .filter-container, .form-container {
+                flex: 1 1 100%;
+                margin-right: 0;
+            }
+            .filter-container {
+                margin-bottom: 20px;
+            }
+            .control-section::after {
+                content: none; /* Remove divider on small screens */
+            }
             .stats-section {
                 flex-direction: column;
             }
-            .stats-section div:not(:last-child) {
+            .stats-section div {
                 border-right: none;
-                border-bottom: 1px solid var(--accent-color);
-                width: 100%;
-                padding-bottom: 10px;
-                margin-bottom: 10px;
             }
-            .filter-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .filter-section .form-group {
-                margin-bottom: 10px;
-            }
-            label {
-                flex: 1 0 100%;
-                margin-bottom: 5px;
-            }
-            input[type="text"], select {
-                flex: 1 0 100%;
-            }
-            .form-group {
-                flex-direction: column;
-                align-items: flex-start;
+            .stats-section div:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 10%;
+                width: 80%;
+                height: 1px;
+                background-color: var(--divider-color);
             }
             header h1 {
                 font-size: 24px;
             }
             header img {
-                width: 180px;
+                width: 80px;
+            }
+            label {
+                flex: 1 0 100%;
+            }
+            input[type="text"], select {
+                flex: 1 0 100%;
+                min-width: 100%;
+            }
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            button {
+                width: 100%;
             }
         }
     </style>
@@ -273,44 +305,51 @@
         </div>
     </div>
 
-    <!-- Filter by Location -->
-    <div class="filter-section">
-        <div class="form-group">
-            <label for="locationFilter">Filter by Location:</label>
-            <select id="locationFilter">
-                <option value="All">All Locations</option>
-            </select>
+    <!-- Control Section -->
+    <div class="control-section">
+        <!-- Filter by Location -->
+        <div class="filter-container">
+            <div class="form-group">
+                <label for="locationFilter">Filter by Location:</label>
+                <select id="locationFilter">
+                    <option value="All">All Locations</option>
+                </select>
+            </div>
         </div>
-        <button id="deleteAllBtn" class="delete-all-btn">Delete All Packages</button>
-    </div>
 
-    <div class="form-section">
-        <form id="packageForm">
-            <div class="form-group">
-                <label for="packageId">Package ID:</label>
-                <input type="text" id="packageId" name="packageId" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Package Description:</label>
-                <input type="text" id="description" name="description" required>
-            </div>
-            <div class="form-group">
-                <label for="location">Delivery Location:</label>
-                <input type="text" id="location" name="location" required>
-            </div>
-            <button type="submit">Add Package</button>
-        </form>
+        <!-- Add Package Form -->
+        <div class="form-container">
+            <form id="packageForm">
+                <div class="form-group">
+                    <label for="packageId">Package ID:</label>
+                    <input type="text" id="packageId" name="packageId" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <!-- Removed 'required' attribute -->
+                    <input type="text" id="description" name="description" placeholder="Optional">
+                </div>
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit">Add Package</button>
+                    <button id="deleteAllBtn" type="button" class="delete-all-btn">Delete All Packages</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th style="width: 80px;">Delivered</th>
+                    <th style="width: 60px;">Delivered</th>
                     <th>Package ID</th>
                     <th>Description</th>
-                    <th>Delivery Location</th>
-                    <th style="width: 100px;">Delete</th>
+                    <th>Location</th>
+                    <th style="width: 80px;">Delete</th>
                 </tr>
             </thead>
             <tbody id="packageList">
@@ -350,9 +389,14 @@
         event.preventDefault();
 
         // Get form values
-        const packageId = document.getElementById('packageId').value;
-        const description = document.getElementById('description').value;
-        const location = document.getElementById('location').value;
+        const packageId = document.getElementById('packageId').value.trim();
+        let description = document.getElementById('description').value.trim();
+        const location = document.getElementById('location').value.trim();
+
+        // Check if description is empty and set to '-' if it is
+        if (description === '') {
+            description = '-';
+        }
 
         // Create package object
         const package = {

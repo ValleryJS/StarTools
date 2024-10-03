@@ -17,7 +17,7 @@ let isMaximized = false;
 let tray;
 let splashStartTime;
 
-const CURRENT_VERSION = '0.8.1'; // Update this with your current version
+const CURRENT_VERSION = '0.8.2'; // Update this with your current version
 
 function createSplashWindow() {
     splashWindow = new BrowserWindow({
@@ -59,7 +59,7 @@ function createMainWindow() {
 
     mainWindow.webContents.on('did-finish-load', () => {
         const elapsedTime = Date.now() - splashStartTime;
-        const minSplashTime = 6000;  // Minimum splash screen time in ms (3 seconds)
+        const minSplashTime = 8000;  // Minimum splash screen time in ms (3 seconds)
 
         // Ensure the splash screen is shown for at least the minimum time
         setTimeout(() => {
